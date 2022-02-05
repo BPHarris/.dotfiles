@@ -1,0 +1,54 @@
+#!/bin/sh
+
+#
+#                     __ _ _
+#    _ __  _ __ ___  / _(_) | ___
+#   | '_ \| '__/ _ \| |_| | |/ _ \
+#  _| |_) | | | (_) |  _| | |  __/
+# (_) .__/|_|  \___/|_| |_|_|\___|
+#   |_|
+#
+#
+# Author: bpharris@pm.me
+#
+
+
+#
+# Exports
+#
+
+export EDITOR="vim"
+export VISUAL="vim"
+export TERMINAL="alacritty"
+export BROWSER="firefox"
+export READER="zathura"
+
+
+#
+# Utils
+#
+
+append_path () {
+	case ":$PATH:" in
+		*:"$1":*)
+			;;
+		*)
+			export PATH="${PATH:+$PATH:}$1"
+	esac
+}
+
+
+#
+# Add user executables to path
+#
+
+append_path ~/.local/bin
+append_path ~/.local/bin/scripts
+
+
+#
+# XDG base dirs
+#
+
+xdg-base-dirs
+

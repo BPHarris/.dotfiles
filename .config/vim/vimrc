@@ -1,0 +1,143 @@
+"
+"        _
+" __   _(_)_ __ ___  _ __ ___
+" \ \ / / | '_ ` _ \| '__/ __|
+"  \ V /| | | | | | | | | (__
+"   \_/ |_|_| |_| |_|_|  \___|
+"
+" Vim config file
+"
+" Author: bpharris@pm.me
+"
+
+
+"
+" Respect XDG Base dirs
+"
+
+set runtimepath^=$XDG_CONFIG_HOME/vim
+set runtimepath+=$XDG_DATA_HOME/vim
+set runtimepath+=$XDG_CONFIG_HOME/vim/after
+
+set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+
+let g:netrw_home = $XDG_DATA_HOME."/vim"
+call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
+set viewdir=$XDG_DATA_HOME/vim/view | call mkdir(&viewdir, 'p')
+
+set backupdir=$XDG_CACHE_HOME/vim/backup | call mkdir(&backupdir, 'p')
+set directory=$XDG_CACHE_HOME/vim/swap   | call mkdir(&directory, 'p')
+set undodir=$XDG_CACHE_HOME/vim/undo     | call mkdir(&undodir,   'p')
+
+if !has('nvim') | set viminfofile=$XDG_STATE_HOME/vim/viminfo | endif
+
+
+"
+" Editor settings
+"
+
+set encoding=utf-8
+set nocompatible
+
+syntax on
+let mapleader = " "
+
+filetype plugin indent on
+
+" Enable line numbers
+set number relativenumber
+set nu rnu
+
+" Set editor rule
+set colorcolumn=88
+
+" Set the cmd line height
+set cmdheight=1
+
+" Enable mouse selection in visual mode
+set mouse=a
+
+" Set updatetime
+" Default: 4000ms, large delays and poor UX
+set updatetime=16
+
+" Remember last position in file
+if has("autocmd")
+	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" Copy to clipboard
+set clipboard^=unnamed,unnamedplus
+
+" Search
+" set incsearch - highlight first result while typing search query
+" set hlsearch  - highlight all results while typing search query
+set incsearch
+
+nnoremap <silent> <leader>h :nohlsearch<CR>
+
+" Set minimum line number above and below cursor
+" set scrolloff=999 - always centre cursor
+set scrolloff=4
+
+" Autoload file changes
+set autoread
+
+" Wrap search to top when at bottom
+set wrapscan
+
+" Disable <C-z>
+nnoremap <c-z> <nop>
+
+
+"
+" Indentation settings
+"
+
+" Defaults
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set noexpandtab
+
+" File specific
+" Only specified where differing from default or required
+" I.e. C, C++, etc can use anything, thus use default
+autocmd FileType make setlocal ts=4 sw=4 sts=4 noexpandtab
+
+autocmd FileType html,xml setlocal ts=2 sw=2 sts=2 noexpandtab
+autocmd FileType css,scss setlocal ts=4 sw=4 sts=4 noexpandtab
+autocmd FileType javascript setlocal ts=4 sw=4 sts=4 noexpandtab
+
+autocmd FileType python setlocal ts=4 sw=4 sts=4 expandtab
+
+autocmd FileType lua setlocal ts=8 sw=4 sts=4 expandtab
+
+
+"
+" Auto-complete pairs
+"
+
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+let delimitMate_excluded_ft = "mail,txt"
+
+" Add "`" to triple-completed quotes for markdown
+autocmd FileType markdown let b:delimitMate_nesting_quotes = ['"', '`']
+
+
+"
+" Fold settings
+"
+
+" NOTE
+" Fold: z c
+" Unfold: z o
+" Manual: z f
+
+set foldmethod=syntax
+
+" Do not fold all by default
+set nofoldenable
+

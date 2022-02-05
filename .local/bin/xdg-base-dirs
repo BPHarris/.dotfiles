@@ -1,0 +1,114 @@
+#!/bin/sh
+
+#
+# ~/.local/bin/xdg.sh
+#          _             _     
+# __  ____| | __ _   ___| |__  
+# \ \/ / _` |/ _` | / __| '_ \ 
+#  >  < (_| | (_| |_\__ \ | | |
+# /_/\_\__,_|\__, (_)___/_| |_|
+#            |___/             
+#
+# XDG directory configurations
+#
+# Author: bpharris@pm.me
+# See:    https://wiki.archlinux.org/title/XDG_Base_Directory
+#
+
+
+# Configure XDG base directories
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+
+# Load XDG user directories, when not root
+export XDG_USER_DIRS="$XDG_CONFIG_HOME"/user-dirs.dirs
+[ "$(id -u)" -ne "0" ] && [ -f "$XDG_USER_DIRS" ] && . "$XDG_USER_DIRS"
+
+#
+# Create
+#
+
+create () { [ -d $1 ] || ( mkdir -p $1 && echo "Created $1") ; }
+
+create "$XDG_CONFIG_HOME"
+create "$XDG_CACHE_HOME"
+create "$XDG_DATA_HOME"
+create "$XDG_STATE_HOME"
+
+
+#
+# Program specific configuration
+#
+
+# X Session
+create "$XDG_CACHE_HOME"/X11
+USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
+USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
+ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"
+ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
+
+# Bash
+create "$XDG_STATE_HOME"/bash
+export HISTFILE="$XDG_STATE_HOME"/bash/history
+
+# Bash completion
+create "$XDG_CONFIG_HOME"/bash-completion
+export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion 
+
+# Vim / Neovim / Gvim
+# Allows for separate configs for each
+create "$XDG_STATE_HOME"/vim
+export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
+export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+
+# Less
+create "$XDG_CONFIG_HOME"/less
+export LESSKEY="$XDG_CONFIG_HOME"/less/lesskey
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+
+# Wget
+touch "$XDG_CONFIG_HOME"/wgetrc
+export WGETRC="$XDG_CONFIG_HOME"/wgetrc
+alias wget="wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\""
+
+# GnuPG
+create "$XDG_DATA_HOME"/gnupg
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+alias gpg2="gpg2 --homedir $GNUPGHOME"
+
+# Python REPL (interative mode) start-up file
+create "$XDG_DATA_HOME"/python
+create "$XDG_CONFIG_HOME"/python
+export PYTHONHISTLENGTH=256
+export PYTHONHISTFILE="$XDG_DATA_HOME"/python/python_history
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/startup.py
+
+# Go
+create "$XDG_DATA_HOME"/go 
+export GOPATH="$XDG_DATA_HOME"/go 
+
+# Rust#Cargo
+create "$XDG_DATA_HOME"/cargo
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+
+# Rust#Rustup
+create "$XDG_DATA_HOME"/rustup
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+
+# Node Package Manager
+create "$XDG_CONFIG_HOME"/npm/config
+create "$XDG_CACHE_HOME"/npm
+create "$XDG_RUNTIME_DIR"/npm
+create "$XDG_DATA_HOME"/npm
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+
+if ! test -f "$XDG_CONFIG_HOME"/npm/npmrc ; then
+	touch "$XDG_CONFIG_HOME"/npm/npmrc
+	echo "prefix=${XDG_DATA_HOME}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
+	echo "cache=${XDG_CACHE_HOME}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
+	echo "tmp=${XDG_RUNTIME_DIR}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
+	echo "init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js" >> "$XDG_CONFIG_HOME"/npm/npmrc
+fi
+

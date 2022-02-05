@@ -1,0 +1,66 @@
+env:
+  TERM: alacritty
+
+
+window:
+  padding:
+    x: 6
+    y: 4
+
+  dimensions:
+    columns: 160
+    lines: 40
+
+  opacity: 0.96
+
+  gtk_theme_variant: dark
+
+
+font:
+  normal:
+    family: FiraCode Nerd Font Mono
+    style: Regular
+
+  bold:
+    family: FiraCode Nerd Font Mono
+    style: Bold
+
+  italic:
+    family: FiraCode Nerd Font Mono
+    style: Italic
+
+  bold_italic:
+    family: FiraCode Nerd Font Mono
+    style: Bold Italic
+
+  size: 14
+
+draw_bold_text_with_bright_colors: true
+
+colors:
+  primary:
+    background: "#161616"
+    foreground: "#F5F5F5"
+
+  normal:
+    black:    "#080808"
+    red:      "#E0493E"
+    green:    "#4F9A4A"
+    yellow:   "#FFCD00"
+    blue:     "#004B87"
+    magenta:  "#972066"
+    cyan:     "#487eb0"
+    white:    "#F5F5F5"
+
+  bright:
+    black:    "#323232"
+    red:      "#DA291C"
+    green:    "#328B2D"
+    yellow:   "#E07400"
+    blue:     "#003052"
+    magenta:  "#66023C"
+    cyan:     "#004B87"
+    white:    "#FFFFFF"
+
+  indexed_colors: []
+
