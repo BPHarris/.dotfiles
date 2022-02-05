@@ -45,13 +45,6 @@ stty -ixon
 
 
 #
-# Programs
-#
-
-export EDITOR=vim
-
-
-#
 # Functions
 #
 
