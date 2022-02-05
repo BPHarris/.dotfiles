@@ -151,10 +151,10 @@ alias cp="cp -i"
 # See: https://man.archlinux.org/man/bash.1#PROMPTING
 #
 
-export PS1=" ${BOLD}${RED}\w ${GREEN}\$${RESET} "
-export PS2=" ${BOLD}${BLUE}>${RESET} "
+export PS1="${BOLD}${RED}\w ${GREEN}\$${RESET} "
+export PS2="${BOLD}${BLUE}>${RESET} "
 export PS3=""
-export PS4=" ${BOLD}${BLUE}+${RESET} "
+export PS4="${BOLD}${BLUE}+${RESET} "
 
 
 #
