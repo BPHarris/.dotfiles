@@ -45,5 +45,12 @@ append_path ~/.local/bin
 append_path ~/.local/bin/scripts
 
 
+#
+# XDG base dirs
+#
+
+xdg-base-dirs
+
+
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
