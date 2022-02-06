@@ -3,8 +3,6 @@ window:
     x: 6
     y: 4
 
-  opacity: 0.99
-
 font:
   normal:
     family: FiraCode Nerd Font Mono
