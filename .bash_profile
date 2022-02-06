@@ -8,49 +8,11 @@
 # (_)_.__/ \__,_|___/_| |_|____| .__/|_|  \___/|_| |_|_|\___|
 #                        |_____|_|
 # 
-# Bash profile, runs on login.
 #
 # Author: bpharris@pm.me
 #
 
 
-#
-# Exports
-#
-export EDITOR="vim"
-export VISUAL="vim"
-export TERMINAL="alacritty"
-export BROWSER="librewolf"
-export READER="zathura"
-
-
-#
-# Utils
-#
-append_path () {
-	case ":$PATH:" in
-		*:"$1":*)
-			;;
-		*)
-			export PATH="${PATH:+$PATH:}$1"
-	esac
-}
-
-
-#
-# Add user executables to path
-#
-
-append_path ~/.local/bin
-append_path ~/.local/bin/scripts
-
-
-#
-# XDG base dirs
-#
-
-xdg-base-dirs
-
-
 [[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -f ~/.profile ]] && . ~/.profile
 
