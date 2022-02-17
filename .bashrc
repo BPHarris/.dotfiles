@@ -26,6 +26,13 @@ config config --local status.showUntrackedFiles no
 
 
 #
+# XDG base dirs
+#
+
+source .local/bin/xdg-base-dirs
+
+
+#
 # Shell options
 #
 
