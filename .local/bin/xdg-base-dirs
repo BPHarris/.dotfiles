@@ -42,6 +42,13 @@ create "$XDG_STATE_HOME"
 # Program specific configuration
 #
 
+# X Session
+create "$XDG_CACHE_HOME"/X11
+USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
+USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
+ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"
+ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
+
 # Bash
 create "$XDG_STATE_HOME"/bash
 export HISTFILE="$XDG_STATE_HOME"/bash/history
@@ -49,6 +56,12 @@ export HISTFILE="$XDG_STATE_HOME"/bash/history
 # Bash completion
 create "$XDG_CONFIG_HOME"/bash-completion
 export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion 
+
+# Vim / Neovim / Gvim
+# Allows for separate configs for each
+create "$XDG_STATE_HOME"/vim
+export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
+export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 
 # Less
 create "$XDG_CONFIG_HOME"/less
