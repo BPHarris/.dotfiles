@@ -1,4 +1,19 @@
+"
+"        _
+" __   _(_)_ __ ___  _ __ ___
+" \ \ / / | '_ ` _ \| '__/ __|
+"  \ V /| | | | | | | | | (__
+"   \_/ |_|_| |_| |_|_|  \___|
+"
+" Vim config file
+"
+" Author: bpharris@pm.me
+"
+
+
+"
 " Respect XDG Base dirs
+"
 set runtimepath^=$XDG_CONFIG_HOME/vim
 set runtimepath+=$XDG_DATA_HOME/vim
 set runtimepath+=$XDG_CONFIG_HOME/vim/after
@@ -15,4 +30,62 @@ set directory=$XDG_CACHE_HOME/vim/swap   | call mkdir(&directory, 'p')
 set undodir=$XDG_CACHE_HOME/vim/undo     | call mkdir(&undodir,   'p')
 
 if !has('nvim') | set viminfofile=$XDG_STATE_HOME/vim/viminfo | endif
+
+
+"
+" Editor settings
+"
+
+set encoding=utf-8
+
+syntax on
+
+" Enable line numbers
+set number relativenumber
+set nu rnu
+
+" Set editor rule
+set colorcolumn=88
+
+" Set the cmd line height
+set cmdheight=1
+
+" Enable mouse selection in visual mode
+set mouse=a
+
+" Set updatetime
+" Default: 4000ms, large delays and poor UX
+set updatetime=200
+
+" Remember last position in file
+if has("autocmd")
+	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+
+"
+" Keys
+"
+
+let mapleader = " "
+
+
+"
+" Indentation settings
+"
+
+" Defaults
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set noexpandtab
+
+" File specific
+autocmd FileType make setlocal ts=4 sw=4 noexpandtab
+
+autocmd FileType html,xml setlocal ts=2 sw=2 noexpandtab
+autocmd FileType css,scss setlocal ts=4 sw=4 noexpandtab
+autocmd FileType javascript setlocal ts=4 sw=4 noexpandtab
+
+autocmd FileType python setlocal ts=4 sw=4 sts=4 expandtab
 
