@@ -69,6 +69,7 @@ export LESSKEY="$XDG_CONFIG_HOME"/less/lesskey
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 
 # Wget
+touch "$XDG_CONFIG_HOME"/wgetrc
 export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 alias wget="wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\""
 
@@ -83,6 +84,10 @@ create "$XDG_CONFIG_HOME"/python
 export PYTHONHISTLENGTH=256
 export PYTHONHISTFILE="$XDG_DATA_HOME"/python/python_history
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/startup.py
+
+# Go
+create "$XDG_DATA_HOME"/go 
+export GOPATH="$XDG_DATA_HOME"/go 
 
 # Rust#Cargo
 create "$XDG_DATA_HOME"/cargo
