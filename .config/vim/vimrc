@@ -60,7 +60,7 @@ set mouse=a
 
 " Set updatetime
 " Default: 4000ms, large delays and poor UX
-set updatetime=200
+set updatetime=16
 
 " Remember last position in file
 if has("autocmd")
