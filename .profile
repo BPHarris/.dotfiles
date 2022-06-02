@@ -16,16 +16,18 @@
 #
 # Exports
 #
+
 export EDITOR="vim"
 export VISUAL="vim"
 export TERMINAL="alacritty"
-export BROWSER="librewolf"
+export BROWSER="firefox"
 export READER="zathura"
 
 
 #
 # Utils
 #
+
 append_path () {
 	case ":$PATH:" in
 		*:"$1":*)
