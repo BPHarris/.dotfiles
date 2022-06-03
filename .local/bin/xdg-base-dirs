@@ -57,18 +57,6 @@ export HISTFILE="$XDG_STATE_HOME"/bash/history
 create "$XDG_CONFIG_HOME"/bash-completion
 export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion 
 
-# .pki
-# This is tricky as mutliple apps use this and often hardcode it, however, firefox
-# supports XDG now
-create "$XDG_DATA_HOME"/pki/nssdb
-if [ -d "$HOME"/.pki/nss ] ; then
-	mv "$HOME"/.pki/nss/* "$XDG_DATA_HOME"/pki/nssdb/
-	rmdir "$HOME"/.pki/nss
-fi
-if [ -d "$HOME"/.pki ] ; then
-	rmdir "$HOME"/.pki
-fi
-
 # Vim / Neovim / Gvim
 # Allows for separate configs for each
 create "$XDG_STATE_HOME"/vim
