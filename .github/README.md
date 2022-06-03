@@ -1,86 +1,61 @@
 # .dotfiles
 
-My personal dotfiles for Arch Linux with Awesome window manager and alacritty terminal.
+My personal linux dotfiles, primarity oriented around Arch and DWM/Qtile/Awesome/Gnome.
+Also used on Pop\_OS and Fedora.
 
 
-## Prerequisites
+## Configs Included
 
-* Bash (Zsh, etc not currently supported)
-* A display manager set to boot your chosen DE/WM (or add an `.xinitrc`)
-
-### [Optional] Plymouth Theme
-
-Plymouth should be installed and configured as per https://wiki.archlinux.org/title/Plymouth#Installation.
-
-I used the following configuration, `/etc/plymouth/plymouthd.conf`:
-
-```
-[Daemon]
-Theme=spinner
-ShowDelay=0
-DeviceTimeout=8
-
-```
-
-### [Optional] LightDM
-
-Install and configure as per https://wiki.archlinux.org/title/LightDM#Installation. I use the https://archlinux.org/packages/?name=lightdm-webkit-theme-litarvan.
+- [x] .bash* and .profile
+- [x] xdg-base-dirs
+	* npm, python, etc
+- [x] vim
+- [ ] nvim
+- [ ] gvim/ gnvim
+- [x] alacritty
+- [x] picom
 
 
 ## Install
 
 ```bash
-$ git clone --bare https://github.com/BPHarris/.dotfiles $HOME/.cfg
+$ git clone --bare https://github.com/bpharris/.dotfiles $HOME/.dotfiles
 $ config checkout
 ```
 
 
-## Dependencies
+## Unhandled Additions
 
-### GTK Theme
+Some related things I like to do that aren't covered by dots.
 
-The GTK theme Numix is used and can be installed via the AUR (https://aur.archlinux.org/packages/numix-gtk-theme) or manually and placed in `/usr/share/themes/`.
+### GTK / Qt Themes
 
-Alternatively, the GTK theme can be changed:
+My GTK theme of choice varies with distro and WM / DE:
 
-* change `gtk-theme-name` in `.config/gtk-3.0/settings.ini`
+Distro | WM / DE    | GTK 4 Theme  | GTK 2/3 Theme | Qt Theme
+:------|:-----------|:-------------|:--------------|:---------------
+Arch   | Gnome      | Default dark | adw-gtk3-dark | QGnomePlatform
+Arch   | Any tiling | TBD          | TBD           | TBD
+Pop_OS | Gnome      | Default dark | Default dark  | Default dark
+Fedora | Gnome      | Default dark | adw-gtk2-dark | QGnomePlatform
 
+In all cases I tend to use Papirus or Tela icons, with the exception of Pop_OS! for
+which I keep everything default.
 
-### Qt Theme
-
-Todo: numix
-
-### Icon Theme
-
-The icon theme used is `Tela-green-dark` (in `Tela-green.tar.xz` in https://www.pling.com/p/1279924/) this must be manually installed to `/usr/share/icons/`, or changed in the following places:
-
-* change `gtk-icon-theme-name` in `.config/gtk-3.0/settings.ini`
-
-### Fonts
-
-Todo: nerd fonts install steps
+For tiling window managers I mostly use CLI and TUI programs and as such I am less
+conserned with the theme, default dark is what I currently use.
 
 
 ## Todo
 
-* Numix fork with appropriate colours
-	- [ ] GTK
-	- [ ] Qt
 * vimrc do not auto complete [ in markdown
 * neovim config
-* graphic neovim config
-* WM/DE rice:
-	* Awesome rice
-		- [ ] Bar
-		- [ ] Centre floating windows on spawn
-		- [ ] Task list
-		- [ ] Add window decorations iff window is floating
-		- [ ] Icon theme
+* graphic vim/neovim config
+
+* WM/DE rices:
 	* Qtile rice
-	* XFCE rice
-	* Gnome rice
+	* Redo suckless/dwm rice but more gooderer
+	* Awesome rice
+
 * Auto install script
-
-
-* Awesome / Qtile with an XFCE base
 
