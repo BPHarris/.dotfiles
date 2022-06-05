@@ -45,12 +45,26 @@ which I keep everything default.
 For tiling window managers I mostly use CLI and TUI programs and as such I am less
 conserned with the theme, default dark is what I currently use.
 
+### GRUB Theme
+
+https://github.com/vinceliuice/grub2-themes
+
+### Plymouth
+
+https://wiki.archlinux.org/title/Plymouth
+
+### UFW
+
+https://wiki.archlinux.org/title/Uncomplicated_Firewall
+
 
 ## Todo
 
 * vimrc do not auto complete [ in markdown
 * neovim config
 * graphic vim/neovim config
+
+* personal grub theme repo
 
 * WM/DE rices:
 	* Qtile rice
