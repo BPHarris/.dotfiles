@@ -20,7 +20,7 @@
 export EDITOR="vim"
 export VISUAL="vim"
 export TERMINAL="alacritty"
-export BROWSER="firefox"
+export BROWSER="librewolf"
 export READER="zathura"
 
 
@@ -44,6 +44,18 @@ append_path () {
 
 append_path ~/.local/bin
 append_path ~/.local/bin/scripts
+
+# Doom Emacs
+append_path ~/.config/emacs/bin
+
+
+#
+# XDG user dirs
+#
+
+# xdg-user-dirs-update expects that paths exist so create /tmp dirs
+mkdir -p /tmp/desktop
+mkdir -p /tmp/public
 
 
 #

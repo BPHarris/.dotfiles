@@ -49,6 +49,10 @@ filetype plugin indent on
 set number relativenumber
 set nu rnu
 
+" Show command
+" Show the normalmode keystrokes in status line
+set showcmd
+
 " Set editor rule
 set colorcolumn=88
 
@@ -79,7 +83,7 @@ nnoremap <silent> <leader>h :nohlsearch<CR>
 
 " Set minimum line number above and below cursor
 " set scrolloff=999 - always centre cursor
-set scrolloff=4
+set scrolloff=8
 
 " Autoload file changes
 set autoread
@@ -89,6 +93,9 @@ set wrapscan
 
 " Disable <C-z>
 nnoremap <c-z> <nop>
+
+" Invert colours in visual mode
+highlight Visual cterm=reverse ctermbg=NONE
 
 
 "

@@ -1,34 +1,16 @@
 #!/bin/bash
 
-#
-#    _               _
-#   | |__   __ _ ___| |__  _ __ ___
-#   | '_ \ / _` / __| '_ \| '__/ __|
-#  _| |_) | (_| \__ \ | | | | | (__
-# (_)_.__/ \__,_|___/_| |_|_|  \___|
-#
-# Bash configuration file
-#
-# Author: bpharris@pm.me
-#
 
-
-# If not running interactively, don't do anything
+# Only apply to interactive shell
 [[ $- != *i* ]] && return
 
 
-#
 # Dotfiles
-#
-
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 config config --local status.showUntrackedFiles no
 
 
-#
 # XDG base dirs
-#
-
 source xdg-base-dirs
 
 
@@ -151,6 +133,11 @@ alias mv="mv -i"
 alias rm="rm -I"
 alias cp="cp -i"
 
+# Emacs
+if command -v emacs &> /dev/null ; then
+	alias emacs="emacsclient -c -a 'emacs'"
+fi
+
 
 #
 # Bash prompt
@@ -158,18 +145,21 @@ alias cp="cp -i"
 # See: https://man.archlinux.org/man/bash.1#PROMPTING
 #
 
-TAB="       "
-export PS1=" ${BOLD}${RED}\w ${GREEN}\$${RESET} "
-export PS2=" ${BOLD}${BLUE}>${RESET}${TAB}"
+export PS1="${BOLD}${RED}\w ${GREEN}\$${RESET} "
+export PS2="${BOLD}${BLUE}>${RESET} "
 export PS3=""
-export PS4=" ${BOLD}${BLUE}+${RESET}${TAB}"
+export PS4="${BOLD}${BLUE}+${RESET} "
 
 
 #
-# Bash Completion
+# Bash Complete
 #
 
-# complete -cf doas
+if command -v doas &> /dev/null ; then
+	complete -cf doas
+	alias sudo='doas'
+	alias sudoedit='doas rnano'
+fi
 
 
 #

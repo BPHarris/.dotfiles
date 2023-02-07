@@ -42,12 +42,13 @@ create "$XDG_STATE_HOME"
 # Program specific configuration
 #
 
-# X Session
+# X11
 create "$XDG_CACHE_HOME"/X11
-USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
-USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
-ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"
-ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
+export USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
+export USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
+export ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"
+export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 # Bash
 create "$XDG_STATE_HOME"/bash
@@ -60,8 +61,8 @@ export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_complet
 # Vim / Neovim / Gvim
 # Allows for separate configs for each
 create "$XDG_STATE_HOME"/vim
-export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
-export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/ginit.lua" | so $MYGVIMRC'
+export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.lua" | so $MYVIMRC'
 
 # Less
 create "$XDG_CONFIG_HOME"/less
@@ -70,6 +71,7 @@ export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 
 # Wget
 touch "$XDG_CONFIG_HOME"/wgetrc
+touch "$XDG_CACHE_HOME"/wget-hsts
 export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 alias wget="wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\""
 
@@ -78,12 +80,13 @@ create "$XDG_DATA_HOME"/gnupg
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 alias gpg2="gpg2 --homedir $GNUPGHOME"
 
-# Python REPL (interative mode) start-up file
+# Python REPL
 create "$XDG_DATA_HOME"/python
 create "$XDG_CONFIG_HOME"/python
-export PYTHONHISTLENGTH=256
-export PYTHONHISTFILE="$XDG_DATA_HOME"/python/python_history
+export PYTHONUSERBASE="$XDG_DATA_HOME"/python
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME"/python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/startup.py
+
 
 # Go
 create "$XDG_DATA_HOME"/go 
@@ -111,4 +114,7 @@ if ! test -f "$XDG_CONFIG_HOME"/npm/npmrc ; then
 	echo "tmp=${XDG_RUNTIME_DIR}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
 	echo "init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js" >> "$XDG_CONFIG_HOME"/npm/npmrc
 fi
+
+# Emacs
+create "$XDG_CONFIG_HOME"/emacs
 

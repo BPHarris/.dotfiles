@@ -1,0 +1,78 @@
+#!/bin/sh
+
+
+usage () {
+	echo usage: $(basename "$0") [-hi] 1>&2
+	echo
+	echo removes *.orig and *.rej left from applying a patch
+	echo
+	echo -h: prints help
+	echo -i: ask before deletion
+	exit 0
+}
+
+
+die () {
+	echo $(basename "$0"): $@
+	exit 1
+}
+
+
+# Parse CLI arguments
+case "$#" in
+	0) mode="-y";;
+	1) mode="$1";;
+	*) die "too many arguments";;
+esac
+
+
+if [ $mode = "-h" ] ; then
+	usage
+fi
+
+
+if [ $mode != "-i" ] && [ $mode != "-y" ] ; then
+	die "invalid argument '$mode'"
+fi
+
+
+# Get target files
+set -- $(ls -1 | grep -e ".orig" -e ".rej")
+
+if [ $# = 0 ] ; then
+	echo $(basename "$0"): nothing to do
+	exit 0
+fi
+
+
+# Get approval status
+# If -y then use default (i.e. yes)
+if [ $mode = "-i" ] ; then
+
+	echo "The following files will be removed:"
+
+	echo
+	for file in "$@"; do
+		printf "\t$file\n"
+	done
+	echo
+
+	read -p "Are you sure? [y/n] " -n 1 -r approved
+	echo
+
+fi
+
+
+if [ ${approved-y} != "y" ] ; then
+	exit 1
+fi
+
+
+# Delete the patch detritus
+# One rm per file to respect rm aliased with -i but not -I
+for file in "$@" ; do
+	rm $file
+done
+
+exit 0
+

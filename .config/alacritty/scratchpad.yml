@@ -11,7 +11,7 @@ window:
     columns: 160
     lines: 40
 
-  opacity: 0.96
+  opacity: 0.75
 
   decorations_theme_variant: dark
 
