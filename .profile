@@ -25,6 +25,13 @@ export READER="zathura"
 
 
 #
+# Set TTY colours
+#
+
+source $HOME/.config/theme/colours/colours.sh
+
+
+#
 # Utils
 #
 

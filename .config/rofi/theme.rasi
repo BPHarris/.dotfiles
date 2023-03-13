@@ -7,40 +7,49 @@
 	dark-grey:      #161616;
 	grey:           #242424;
 	light-grey:     #323232;
-	off-white:      #e0e0e0;
-	white:          #f5f5f5;
-	red:            #da291c;
-	flat-red:       #e0493e;
-	green:          #328b2d;
-	flat-green:     #4f9a4a;
-	blue:           #003052;
-	flat-blue:      #004b87;
-	yellow:         #e07400;
-	flat-yellow:    #ffcd00;
-	purple:         #66023c;
-	flat-purple:    #972066;
 
-	background:     var(grey);
-	foreground:     var(off-white);
+	red:            #cf4f43;
+	bright-red:     #993e36;
+
+	green:          #54964f;
+	bright-green:   #5c8b59;
+
+	yellow:         #d17536;
+	bright-yellow:  #aa9c30;
+
+	blue:           #1b4666;
+	bright-blue:    #1267a5;
+
+	magenta:        #5e196d;
+	bright-magenta: #8910ad;
+
+	cyan:           #5e8b8d;
+	bright-cyan:    #61c4c6;
+
+	white:          #f5f5f5;
+	bright-white:   #646464;
+	off-white:      #e0e0e0;
+
+	background:     #202020;
+	foreground:     #f5f5f5;
 
 	/* defaults */
     background-color:            transparent;
     border-color:                var(foreground);
     separatorcolor:              var(foreground);
-    spacing:                     2;
 
 	/* odd numbered elements */
     normal-background:           var(background);
     urgent-background:           var(background);
     active-background:           var(background);
 
-    selected-normal-background:  var(flat-green);
-    selected-urgent-background:  var(flat-red);
-    selected-active-background:  var(flat-blue);
+    selected-normal-background:  var(bright-green);
+    selected-urgent-background:  var(bright-red);
+    selected-active-background:  var(blue);
 
     normal-foreground:           var(foreground);
-    urgent-foreground:           var(flat-red);
-    active-foreground:           var(flat-blue);
+    urgent-foreground:           var(bright-red);
+    active-foreground:           var(blue);
 
     selected-normal-foreground:  var(white);
     selected-urgent-foreground:  var(background);
@@ -134,7 +143,7 @@ listview {
     spacing:      2px ;
     fixed-height: 0;
     border:       1px solid 0px 0px ;
-	lines:        8;
+	lines:        10;
 	columns:      1;
 }
 scrollbar {
@@ -174,7 +183,7 @@ inputbar {
     padding:    0px 0px 8px 0px ;
     spacing:    0px ;
     text-color: var(normal-foreground);
-	children: ["entry", "case-indicator"];
+	children: ["prompt", "textbox-prompt-colon", "entry", "case-indicator"];
     /* default children
 	children:   [ "prompt","textbox-prompt-colon","entry","num-filtered-rows","textbox-num-sep","num-rows","case-indicator" ];
 	*/
@@ -187,7 +196,7 @@ entry {
     text-color:        var(normal-foreground);
     cursor:            text;
     spacing:           0;
-    placeholder-color: grey;
+    placeholder-color: var(bright-white);
     placeholder:       "type to filter...";
 }
 prompt {
@@ -195,8 +204,8 @@ prompt {
     text-color: var(normal-foreground);
 }
 textbox-prompt-colon {
-    margin:     0px 0.3000em 0.0000em 0.0000em ;
+    margin:     0px 0.5000em 0.0000em 0.0000em ;
     expand:     false;
-    str:        "  ";
+    str:        ":";
     text-color: inherit;
 }

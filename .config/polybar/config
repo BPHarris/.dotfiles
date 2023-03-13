@@ -36,34 +36,38 @@ dark-grey = #161616
 grey = #242424
 light-grey = #323232
 
-off-white = #e0e0e0
+red = #cf4f43
+bright-red = #993e36
+
+green = #54964f
+bright-green = #5c8b59
+
+yellow = #d17536
+bright-yellow = #aa9c30
+
+blue = #1b4666
+bright-blue = #1267a5
+
+magenta = #5e196d
+bright-magenta = #8910ad
+
+cyan = #5e8b8d
+bright-cyan = #61c4c6
+
 white = #f5f5f5
+bright-white = #646464
+off-white = #e0e0e0
 
-red = #da291c
-flat-red = #e0493e
+background = #202020
+background-alt = ${colours.background}
 
-green = #328b2d
-flat-green = #4f9a4a
+foreground = #f5f5f5
+foreground-alt = ${colours.green}
 
-blue = #003052
-flat-blue = #004b87
-
-yellow = #e07400
-flat-yellow = #ffcd00
-
-purple = #66023c
-flat-purple = #972066
-
-background = ${colours.dark-grey} 
-background-alt = ${colours.grey}
-
-foreground = ${colours.off-white}
-foreground-alt = ${colours.flat-green}
-
-tag-focused-background = ${colours.flat-green}
+tag-focused-background = ${colours.bright-green}
 tag-unfocused-background = ${colours.background}
-tag-visible-background = ${colours.flat-blue}
-tag-urgent-background = ${colours.flat-yellow}
+tag-visible-background = ${colours.background}
+tag-urgent-background = ${colours.bright-red}
 
 
 
@@ -80,21 +84,21 @@ background = ${colours.background}
 foreground = ${colours.foreground}
 
 line-size = 6
-line-colour = ${colours.}
+line-colour = ${colours.foreground}
 
 padding-right = 1
 
-font-0 = FiraCode Nerd Font Mono:size=14;2
+font-0 = FiraCode Nerd Font Mono:size=13;2
 font-1 = Font Awesome 6 Free:size=14;2
 font-2 = Font Awesome 6 Free Solid:size=14;2
 font-3 = Font Awesome 6 Brands:size=14;2
 font-4 = Font Awesome v4 Compatibility:size=14;2
 
 modules-left = dwm title
-modules-right = eth pad  memory pad cpu pad pulseaudio date
+modules-right = audio pad network pad cpu pad memory pad date
 
 tray-position = right
-tray-padding = 2
+tray-padding = 0
 
 ; required by dwm-anybar
 override-redirect = false
@@ -130,12 +134,12 @@ label-floating = F
 
 label-title = %title%
 label-title-maxlen = 35
-label-title-padding = 2
+label-title-padding = 1
 label-title-foreground = ${colours.foreground}
 label-title-background = ${colours.background}
 
 label-layout = %symbol%
-label-layout-padding = 2
+label-layout-padding = 1
 label-layout-foreground = ${colours.foreground}
 label-layout-background = ${colours.background}
 
@@ -144,27 +148,27 @@ label-focused = %name%
 label-focused-background = ${colours.tag-focused-background}
 label-focused-foreground = ${colours.foreground}
 label-focused-padding = 1
-label-focused-font = 2
+label-focused-font = 1
 
 ; unfocused = Inactive tag on any monitor
 label-unfocused = %name%
 label-unfocused-background = ${colours.tag-unfocused-background}
 label-unfocused-foreground = ${colours.foreground}
 label-unfocused-padding = 1
-label-unfocused-font = 2
+label-unfocused-font = 1
 
 ; visible = Active tag on unfocused monitor
 label-visible = %name%
 label-visible-background = ${colours.tag-visible-background}
 label-visible-foreground = ${colours.foreground}
 label-visible-padding = 1
-label-visible-font = 2
+label-visible-font = 1
 
 ; urgent = Tag with urgency hint set
 label-urgent = %name%
 label-urgent-background = ${colours.tag-urgent-background}
 label-urgent-padding = 1
-label-urgent-font = 2
+label-urgent-font = 1
 
 ; empty = Tags with no windows assigned
 ; This can be set to an empty string to hide empty tags
@@ -176,142 +180,124 @@ label-empty =
 
 
 [module/title]
+; https://github.com/polybar/polybar/wiki/Module:-xwindow
 type = internal/xwindow
+
+format = <label>
+
+label = %title%
+label-maxlen = 50
+
+label-empty = ""
+label-empty-foreground = ${colours.foreground}
 
 
 
 [module/memory]
+; https://github.com/polybar/polybar/wiki/Module:-memory
 type = internal/memory
-interval = 2
+interval = 1
 
-label = %percentage_used%%
-label-foreground = ${colours.foreground}
+format = <label>
+label =  %percentage_used%%
 
-format-prefix = " "
-format-prefix-font = 2
-format-prefix-foreground = ${colours.icon}
-
+; Spacing
 format-padding = 1
-format-margin = 1
-format-background = ${colours.background-alt}
-format-underline = ${colours.background}
-format-overline = ${colours.background}
+format-underline = ${colours.blue}
+
 
 
 [module/cpu]
+; https://github.com/polybar/polybar/wiki/Module:-cpu
 type = internal/cpu
 interval = 1
 
-label = %percentage:2%%
-label-foreground = ${colours.foreground}
+format = <label>
+label =  %percentage:2%%
 
-format-prefix = 
-font-prefix-font = 6
-format-prefix-padding-right = 1
-format-prefix-foreground = ${colours.icon}
-
+; Spacing
 format-padding = 1
-format-background = ${colours.background-alt}
-format-underline = ${colours.background}
-format-overline = ${colours.background}
+format-underline = ${colours.blue}
 
 
 
-[module/eth]
+[module/network]
+; https://github.com/polybar/polybar/wiki/Module:-network
 type = internal/network
+interval = 1.0
+ping-interval = 1.0
+
 interface = eth0
-interval = 3.0
-ping-interval = 3.0
+speed-unit = ""
 
-label-connected = %local_ip%
-label-connected-foreground = ${colours.foreground}
-
-label-packetloss = %local_ip%
-label-packetloss-foreground = ${colours.foreground}
-
-label-disconnected =
-
+; Connected
 format-connected = <label-connected>
-format-connected-prefix = 
-format-connected-prefix-font = 6
-format-connected-prefix-padding-right = 1
-format-connected-prefix-foreground = ${colours.icon}
+label-connected =  %downspeed%  %upspeed%
 
+; Disconnected
+format-disconnected = <label-disconnected>
+label-disconnected =  No Internet
+label-disconnected-foreground = ${colours.red}
+
+; Spacing
 format-connected-padding = 1
-format-connected-margin = 1
-format-connected-underline = ${colours.background}
-format-connected-overline = ${colours.background}
-format-connected-background = ${colours.background-alt}
+format-connected-underline = ${colours.blue}
 
-format-packetloss-prefix = 
-format-packetloss-prefix-font = 6
-format-packetloss-prefix-padding-right = 1
-format-packetloss-prefix-foreground = ${colours.icon}
+format-disconnected-padding = 1
+format-disconnected-underline = ${colours.red}
 
 format-packetloss-padding = 1
-format-packetloss-margin = 1
-format-packetloss-underline = ${colours.background}
-format-packetloss-overline = ${colours.background}
-format-packetloss-background = ${colours.background-alt}
-format-packetloss = <label-connected>
+format-packetloss-underline = ${colours.blue}
 
 
 
-[module/pulseaudio]
+[module/audio]
+; https://github.com/polybar/polybar/wiki/Module:-pulseaudio
 type = internal/pulseaudio
+interval = 1
 
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-
-ramp-volume-foreground = ${colours.icon}
-ramp-volume-font = 6
-ramp-volume-padding-right = 1
-
+; Unmuted
+format-volume = <ramp-volume> <label-volume>
 label-volume = %percentage%%
-label-volume-foreground = ${colours.foreground}
 
-format-volume = <ramp-volume><label-volume>
-format-volume-padding = 1
-format-volume-margin = 1
-format-volume-background = ${colours.background-alt}
-format-volume-overline = ${colours.background}
-format-volume-underline = ${colours.background}
-
+; Muted
+format-muted = <label-muted>
 label-muted = %percentage%%
 
-format-muted-prefix = 
-format-muted-prefix-padding-right = 1
-format-muted-prefix-foreground = ${colours.alert}
+format-muted-prefix = 
+format-muted-prefix-padding-right = 2
+format-muted-prefix-foreground = ${colours.yellow}
+
+; Ramp Volume
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+ramp-volume-padding-right = 1
+
+; Spacing
+format-volume-padding = 1
+format-volume-underline = ${colours.blue}
 
 format-muted-padding = 1
-format-muted-margin = 1
-format-muted-foreground = ${colours.alert}
-format-muted-background = ${colours.background-alt}
-format-muted-overline = ${colours.background}
-format-muted-underline = ${colours.background}
+format-muted-underline = ${colours.yellow}
 
 
 
 [module/date]
+; https://github.com/polybar/polybar/wiki/Module:-date
 type = internal/date
-date = "%a %m-%d-%Y"
-time = %I:%M %p
-interval = 5
+interval = 1
 
-label = %date%  %time%
+date = "%a %d-%m-%Y"
+time = "%I:%M %p"
 
-format-prefix = 
-format-prefix-font = 6
-format-prefix-padding-right = 1
-format-prefix-padding-left = 0
+format = <label>
+label = %date% %time%
 
+; Spacing
 format-padding = 1
-format-margin = 1
-format-underline = ${colours.background}
-format-overline = ${colours.background}
-format-prefix-foreground = ${colours.icon}
-format-background = ${colours.background-alt}
+format-underline = ${colours.blue}
 
 
 [module/pad]

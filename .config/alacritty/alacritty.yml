@@ -11,7 +11,7 @@ window:
     columns: 160
     lines: 40
 
-  opacity: 0.96
+  opacity: 0.95
 
   decorations_theme_variant: dark
 
@@ -40,27 +40,27 @@ draw_bold_text_with_bright_colors: false
 colors:
   primary:
     background: "#161616"
-    foreground: "#F5F5F5"
+    foreground: "#f5f5f5"
 
   normal:
-    black:    "#080808"
-    red:      "#E0493E"
-    green:    "#4F9A4A"
-    yellow:   "#FFCD00"
-    blue:     "#004B87"
-    magenta:  "#972066"
-    cyan:     "#487eb0"
-    white:    "#E0E0E0"
+    black:   "#080808"
+    red:     "#cf4f43"
+    green:   "#54964f"
+    yellow:  "#d17536"
+    blue:    "#1b4666"
+    magenta: "#5e196d"
+    cyan:    "#5e8b8d"
+    white:   "#646464"
 
   bright:
-    black:    "#323232"
-    red:      "#DA291C"
-    green:    "#328B2D"
-    yellow:   "#E07400"
-    blue:     "#003052"
-    magenta:  "#66023C"
-    cyan:     "#004B87"
-    white:    "#F5F5F5"
+    black:   "#323232"
+    red:     "#993e36"
+    green:   "#5c8b59"
+    yellow:  "#aa9c30"
+    blue:    "#1267a5"
+    magenta: "#8910ad"
+    cyan:    "#61c4c6"
+    white:   "#e0e0e0"
 
   indexed_colors: []
 

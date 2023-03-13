@@ -1,6 +1,6 @@
 configuration {
 	modes: "drun,run,filebrowser";
-	font: "FiraCode Nerd Font Mono 14";
+	font: "FiraCode Nerd Font Mono 13";
 	/*fixed-num-lines: true;*/
 	show-icons: true;
 /*	terminal: "rofi-sensible-terminal";*/
