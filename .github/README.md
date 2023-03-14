@@ -10,7 +10,7 @@ My dotfiles.
 
 Core:
 ```bash
-sudo pacman -S git ttf-firacode-nerd ttf-font-awesome noto-fonts-emoji
+sudo pacman -S git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-emoji
 ```
 
 PulseAudio scripts:
