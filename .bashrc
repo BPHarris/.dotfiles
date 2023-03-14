@@ -138,6 +138,12 @@ if command -v emacs &> /dev/null ; then
 	alias emacs="emacsclient -c -a 'emacs'"
 fi
 
+# MPV
+# Distinguish between mpv from terminal and other (xdg-open, etc)
+#	terminal:	WM_CLASS(STRING) = "swallow-mpv", "mpv"
+#	other:		WM_CLASS(STRING) = "gl", "mpv"
+alias mpv="mpv --x11-name='swallow-mpv'"
+
 
 #
 # Bash prompt
