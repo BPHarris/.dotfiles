@@ -1,0 +1,85 @@
+#!/bin/sh
+
+
+STEP=2
+
+DURATION=800
+
+USE_MUTE_ICON_ON_VOLUME_0=true
+VOLUME_LOW_CUTOFF=33
+VOLUME_MEDIUM_CUTOFF=67
+
+NAME=$(basename "$0")
+
+
+if ! command -v pamixer >/dev/null ; then
+	notify-send -i "script-error" "Error" "Missing prerequisite pamixer"
+	exit 1
+fi
+
+
+usage() {
+	echo "$NAME -- xf86 controls for pulseaudio"
+	echo ""
+	echo "usage:"
+	echo "    $NAME [-h | --help]"
+	echo "    $NAME command"
+	echo ""
+	echo "commands:"
+	echo "    toggle-mute -- toggle mute and notify"
+	echo "    volume-up   -- increase volume by $STEP and notify"
+	echo "    volume-down -- decrease volume by $STEP and notify"
+	exit 0
+}
+
+
+icon() {
+	level=$(pamixer --get-volume)
+
+	if [ "$level" -eq 0 ] && [ "$USE_MUTE_ICON_ON_VOLUME_0" = "true" ] ; then
+		echo "notification-audio-volume-off"
+	elif [ "$level" -le "$VOLUME_LOW_CUTOFF" ] ; then
+		echo "notification-audio-volume-low"
+	elif [ "$level" -le "$VOLUME_MEDIUM_CUTOFF" ] ; then
+		echo "notification-audio-volume-medium"
+	else
+		echo "notification-audio-volume-high"
+	fi
+}
+
+
+mute() {
+	pamixer --toggle-mute
+
+	if [ "$(pamixer --get-mute)" = "true" ] ; then
+		notify-send -t "$DURATION" -i "notification-audio-volume-muted" "Volume" "Muted"
+	else
+		notify-send -t "$DURATION" -i "$(icon)" "Volume" "Unmuted"
+	fi
+}
+
+
+up() {
+	pamixer --increase "$STEP"
+	notify-send -t "$DURATION" -i "$(icon)" -h "int:value:$(pamixer --get-volume)" "Volume" "Increased"
+}
+
+
+down() {
+	pamixer --decrease "$STEP"
+	notify-send -t "$DURATION" -i "$(icon)" -h "int:value:$(pamixer --get-volume)" "Volume" "Decreased"
+}
+
+
+if [ "$1" = "toggle-mute" ] ; then
+	mute
+elif [ "$1" = "volume-up" ] ; then
+	up
+elif [ "$1" = "volume-down" ] ; then
+	down
+else
+	usage
+fi
+
+exit 0
+
