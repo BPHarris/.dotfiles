@@ -1,19 +1,22 @@
 #!/bin/sh
 
 
+NAME=$(basename "$0")
+
+
 usage () {
-	echo usage: $(basename "$0") [-hi] 1>&2
-	echo
-	echo removes *.orig and *.rej left from applying a patch
-	echo
-	echo -h: prints help
-	echo -i: ask before deletion
+	echo "usage: $NAME [-hi] 1>&2"
+	echo ""
+	echo "removes *.orig and *.rej left from applying a patch"
+	echo ""
+	echo "-h: prints help"
+	echo "-i: ask before deletion"
 	exit 0
 }
 
 
 die () {
-	echo $(basename "$0"): $@
+	echo "$NAME: $*"
 	exit 1
 }
 
@@ -26,44 +29,45 @@ case "$#" in
 esac
 
 
-if [ $mode = "-h" ] ; then
+if [ "$mode" = "-h" ] ; then
 	usage
 fi
 
 
-if [ $mode != "-i" ] && [ $mode != "-y" ] ; then
+if [ "$mode" != "-i" ] && [ "$mode" != "-y" ] ; then
 	die "invalid argument '$mode'"
 fi
 
 
 # Get target files
-set -- $(ls -1 | grep -e ".orig" -e ".rej")
+# shellcheck disable=SC2046,SC2010
+set -- $(ls -1 | grep -e '.orig$' -e '.rej$')
 
-if [ $# = 0 ] ; then
-	echo $(basename "$0"): nothing to do
+if [ "$#" = 0 ] ; then
+	echo "$NAME: nothing to do"
 	exit 0
 fi
 
 
 # Get approval status
 # If -y then use default (i.e. yes)
-if [ $mode = "-i" ] ; then
+if [ "$mode" = "-i" ] ; then
 
 	echo "The following files will be removed:"
 
 	echo
 	for file in "$@"; do
-		printf "\t$file\n"
+		printf "\t%s\n" "$file"
 	done
 	echo
 
-	read -p "Are you sure? [y/n] " -n 1 -r approved
-	echo
+	printf "Are you sure? [y/n] "
+	read -r approved
 
 fi
 
 
-if [ ${approved-y} != "y" ] ; then
+if [ "${approved-y}" != "y" ] && [ "${approved-y}" != "y\n" ] ; then
 	exit 1
 fi
 
@@ -71,7 +75,7 @@ fi
 # Delete the patch detritus
 # One rm per file to respect rm aliased with -i but not -I
 for file in "$@" ; do
-	rm $file
+	rm "$file"
 done
 
 exit 0
