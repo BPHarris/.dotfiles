@@ -8,12 +8,12 @@ My dotfiles.
 
 ### Prerequisites
 
-Core:
+**Core:**
 ```bash
 sudo pacman -S git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-emoji
 ```
 
-PulseAudio scripts:
+**PulseAudio scripts:**
 ```bash
 sudo pacman -S pamixer
 ```
@@ -36,16 +36,23 @@ Nota Bene:
 Be sure to use absolute paths in symblolic links to avoid any gotchas
 (i.e. via `$HOME`).
 
-Mouse config:
-
+**Mouse config:**
 ```bash
 sudo ln -s $HOME/.config/X11/* /etc/X11/xorg.conf.d/
 ```
 
-Bash completions (including the `config` alias):
-
+**Bash completions (including the `config` alias):**
 ```bash
 sudo ln -s $HOME/.config/bash-completion/completions/* /usr/share/bash-completion/completions/
+```
+
+**Pacman hooks:**
+```bash
+# Update init ram fs on kernal and/or nvidia driver update:
+sudo ln -s $HOME/.local/pacman-hooks/nvidia.hook /etc/pacman.d/hooks/nvidia.hook
+
+# Reset user xkbmap on updating X11:
+sudo ln -s $HOME/.local/pacman-hooks/xorg-set-user-xkbmap.hook /etc/pacman.d/hooks/xorg-set-user-xkbmap.hook
 ```
 
 
