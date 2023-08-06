@@ -158,17 +158,6 @@ export PS4="${BOLD}${BLUE}+${RESET} "
 
 
 #
-# Bash Complete
-#
-
-if command -v doas &> /dev/null ; then
-	complete -cf doas
-	alias sudo='doas'
-	alias sudoedit='doas rnano'
-fi
-
-
-#
 # Fun
 #
 
