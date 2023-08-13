@@ -11,9 +11,13 @@ VOLUME_MEDIUM_CUTOFF=67
 
 NAME=$(basename "$0")
 
+MISC_ID=86000
+MUTE_ID=86001
+VOLUME_ID=86002
+
 
 if ! command -v pamixer >/dev/null ; then
-	notify-send -i "script-error" "Error" "Missing prerequisite pamixer"
+	notify-send -r "$MISC_ID" -i "script-error" "Error" "Missing prerequisite pamixer"
 	exit 1
 fi
 
@@ -52,22 +56,22 @@ mute() {
 	pamixer --toggle-mute
 
 	if [ "$(pamixer --get-mute)" = "true" ] ; then
-		notify-send -t "$DURATION" -i "notification-audio-volume-muted" "Volume" "Muted"
+		notify-send -r "$MUTE_ID" -t "$DURATION" -i "notification-audio-volume-muted" "Volume" "Muted"
 	else
-		notify-send -t "$DURATION" -i "$(icon)" "Volume" "Unmuted"
+		notify-send -r "$MUTE_ID" -t "$DURATION" -i "$(icon)" "Volume" "Unmuted"
 	fi
 }
 
 
 up() {
 	pamixer --increase "$STEP"
-	notify-send -t "$DURATION" -i "$(icon)" -h "int:value:$(pamixer --get-volume)" "Volume" "Increased"
+	notify-send -r "$VOLUME_ID" -t "$DURATION" -i "$(icon)" -h "int:value:$(pamixer --get-volume)" "Volume" "Increased"
 }
 
 
 down() {
 	pamixer --decrease "$STEP"
-	notify-send -t "$DURATION" -i "$(icon)" -h "int:value:$(pamixer --get-volume)" "Volume" "Decreased"
+	notify-send -r "$VOLUME_ID" -t "$DURATION" -i "$(icon)" -h "int:value:$(pamixer --get-volume)" "Volume" "Decreased"
 }
 
 
