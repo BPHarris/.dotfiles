@@ -15,6 +15,14 @@ setxkbmap gb
 setxkbmap -option "caps:swapescape"
 
 
+# Start dbus session (for seahorse)
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
+	eval $(dbus-launch --exit-with-session --sh-syntax)
+fi
+
+dbus-update-activation-environment --verbose --all &> /tmp/xinit-start-dbus.log
+
+
 # Autostart
 dex --autostart --wait
 nitrogen --restore
