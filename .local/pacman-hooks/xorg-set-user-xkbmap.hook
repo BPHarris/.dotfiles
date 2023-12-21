@@ -1,12 +1,11 @@
 [Trigger]
 Operation = Install
 Operation = Upgrade
-Type = Path
-Target = etc/X11/*/
+Type = Package
+Target = *
 
 [Action]
 Description = Running 'set-user-xkbmap' script...
 When = PostTransaction
-Exec = set-user-xbkmap
-NeedsTargets
+Exec = /bin/sudo -u anon /bin/bash /home/anon/.local/bin/set-user-xkbmap
 
