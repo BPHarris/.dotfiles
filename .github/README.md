@@ -84,10 +84,9 @@ Some optional additional configuration.
 
 ### Emoji Picker
 
-Install via:
-```bash
-sudo pacman -S rofi-emoji
-```
+For install instructions see: https://github.com/fdw/rofimoji
+
+Note: `rofimoji` supports `wofi` by default, so this works for wayland also.
 
 Use via:
 ```bash

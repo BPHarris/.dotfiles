@@ -1,7 +1,7 @@
 #window {
 	border: 2px solid #54964f;
-	border-radius: 8px;
-	background-color: #202020;
+	border-radius: 4px;
+	background-color: #161616;
 
 	font-size: 16px;
 	font-family: FiraCode Nerd Font Mono
@@ -9,12 +9,12 @@
 
 #outer-box {
 	margin: 6px;
-	background-color: #202020;
+	background-color: #161616;
 }
 
 #inner-box {
 	margin: 0px;
-	background-color: #202020;
+	background-color: #161616;
 }
 #scroll {
 	margin: 0px;
@@ -22,7 +22,7 @@
 
 #input {
 	margin: 0px;
-	background-color: #202020;
+	background-color: #161616;
 
 	border: none;
 	padding-bottom: 4px;
@@ -34,7 +34,7 @@
 #text {
 	margin: 0px;
 	border: none;
-	padding: 4px;
+	padding: 6px;
 }
 #text:selected {
 }

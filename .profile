@@ -20,7 +20,7 @@
 export EDITOR="vim"
 export VISUAL="vim"
 export TERMINAL="alacritty"
-export BROWSER="librewolf"
+export BROWSER="brave"
 export READER="zathura"
 
 
@@ -49,11 +49,15 @@ append_path () {
 # Add user executables to path
 #
 
-append_path ~/.local/bin
-append_path ~/.local/bin/scripts
+append_path "~/.local/bin"
+append_path "~/.local/bin/scripts"
 
 # Doom Emacs
-append_path ~/.config/emacs/bin
+append_path "~/.config/emacs/bin"
+
+# Root bin
+# Used by pipx etc
+append_path "/root/.local/bin"
 
 
 #
