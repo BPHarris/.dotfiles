@@ -1,9 +1,7 @@
+from atexit import register
 from os import environ
 from os.path import expanduser, join
-
-from atexit import register
-from readline import read_history_file, write_history_file, set_history_length
-
+from readline import read_history_file, set_history_length, write_history_file
 
 histfile = environ.get(
     "PYTHONHISTFILE",
