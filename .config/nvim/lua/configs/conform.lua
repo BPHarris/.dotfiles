@@ -1,9 +1,8 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    -- css = { "prettier" },
-    -- html = { "prettier" },
-    python = {"ruff_organize_imports", "ruff_format", "ruff_fix"},
+    python = { "ruff_organize_imports", "ruff_format", "ruff_fix" },
+    go = { "goimports", "gofumpt" },
   },
 
   -- format_on_save = {
