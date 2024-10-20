@@ -1,16 +1,14 @@
 #window {
-	border: 2px solid #dedede;
-	border-radius: 8px;
+	border: 2px solid #54964f;
+	border-radius: 4px;
+	background-color: #161616;
 
-	background-color: #323232;
-	opacity: 0.9;
-
-	font-size: 18px;
+	font-size: 16px;
 	font-family: FiraCode Nerd Font Mono
 }
 
 #outer-box {
-	margin: 3px;
+	margin: 6px;
 	background-color: #161616;
 }
 
@@ -23,27 +21,22 @@
 }
 
 #input {
-	margin: 16px;
+	margin: 0px;
 	background-color: #161616;
 
 	border: none;
-
-	/*
+	padding-bottom: 4px;
+	margin-bottom: 4px;
 	border-bottom: 2px dashed #e0e0e0;
 	border-radius: 0px;
-	*/
 }
 
 #text {
 	margin: 0px;
 	border: none;
 	padding: 6px;
-	background-color: #161616;
 }
 #text:selected {
-	color: #080808;
-	background-color: #dedede;
-	font-weight: 800;
 }
 
 
@@ -51,15 +44,11 @@
 }
 #entry:selected {
 	outline: none;
-	background-color: #dedede;
+	background-color: #54964f;
 }
 
 #img {
 	padding-left: 10px;
 	padding-right: 20px;
-	background-color: #161616;
-}
-#img:selected {
-	background-color: #dedede;
 }
 
