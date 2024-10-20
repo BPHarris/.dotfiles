@@ -23,6 +23,13 @@ shopt -s autocd
 export HISTCONTROL=ignoredups
 shopt -s histappend
 
+# Unlimited bash history
+export HISTFILESIZE=
+export HISTSIZE=
+
+# Flush to bash history immediately
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
 # Line wrap on window resize
 shopt -s checkwinsize
 
