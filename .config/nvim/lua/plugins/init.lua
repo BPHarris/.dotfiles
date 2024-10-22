@@ -5,13 +5,45 @@ return {
     opts = require "configs.conform",
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
     end,
   },
+
+  -- Winbar
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {
+      -- configurations go here
+    },
+  },
+
+  -- Neotest
+  -- TODO Is the config actually loading?
+  -- {
+  --   "nvim-neotest/neotest",
+  --   dependencies = {
+  --     "nvim-neotest/nvim-nio",
+  --     "nvim-lua/plenary.nvim",
+  --     "antoinemadec/FixCursorHold.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   opts = require "configs.neotest",
+  -- },
+  -- {
+  --   "nvim-neotest/neotest-python",
+  --   dependencies = {
+  --     "nvim-neotest/neotest",
+  --   },
+  -- },
 
   -- {
   -- 	"nvim-treesitter/nvim-treesitter",

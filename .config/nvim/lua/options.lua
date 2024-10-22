@@ -1,18 +1,29 @@
 require "nvchad.options"
 
-local opt = vim.opt
-local map = vim.keymap.set
+local autocmd = vim.api.nvim_create_autocmd
 
 vim.o.cursorlineopt = "both"
 
--- Indenting
-opt.expandtab = false
-opt.shiftwidth = 4
-opt.smartindent = true
-opt.tabstop = 4
-opt.softtabstop = 4
+vim.o.spell = true
+vim.o.spelllang = "en_gb"
 
--- Indenting: Python
+-- Indenting
+vim.o.smartindent = true
+
+vim.expandtab = false
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lua",
+  callback = function()
+    vim.expandtab = true
+    vim.opt.shiftwidth = 2
+    vim.opt.tabstop = 2
+    vim.opt.softtabstop = 2
+  end,
+})
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function()
@@ -23,12 +34,11 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Line numbers, rules, etc
-opt.relativenumber = true
+-- Line numbers, rules, etc.
+vim.opt.relativenumber = true
+vim.o.colorcolumn = "88,100,120"
 
 -- Restore cursor position
-local autocmd = vim.api.nvim_create_autocmd
-
 autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
@@ -44,7 +54,21 @@ autocmd("BufReadPost", {
   end,
 })
 
--- Show lsp hover
-map("n", "<leader>st", function()
-  vim.lsp.buf.hover()
-end, { desc = "Show LSP hover" })
+-- Barbecue
+-- Default config from github
+require("barbecue").setup {
+  create_autocmd = false,
+}
+
+vim.api.nvim_create_autocmd({
+  "WinScrolled",
+  "BufWinEnter",
+  "CursorHold",
+  "InsertLeave",
+  "BufModifiedSet",
+}, {
+  group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+  callback = function()
+    require("barbecue.ui").update()
+  end,
+})

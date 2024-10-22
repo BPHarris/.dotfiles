@@ -3,6 +3,7 @@ local options = {
     lua = { "stylua" },
     python = { "ruff_organize_imports", "ruff_format", "ruff_fix" },
     go = { "goimports", "gofumpt" },
+    cpp = { "astyle" },
   },
 
   -- format_on_save = {

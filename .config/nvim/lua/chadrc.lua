@@ -18,4 +18,11 @@ M.lsp = {
   signature = true,
 }
 
+M.ui = {
+  statusline = {
+    theme = "minimal",
+    order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "cursor" },
+  },
+}
+
 return M
