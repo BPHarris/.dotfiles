@@ -2,22 +2,23 @@
 
 My dotfiles.
 
-
-
 ## Install
 
 ### Prerequisites
 
 **Core:**
+
 ```bash
 sudo pacman -S git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-emoji
 ```
 
-**PulseAudio scripts:**
+The complete Nerd Fonts package should be installed for maximum compatibility.
+
+**PulseAudio scripts (.local/bin/xf86-pulseaudio, etc.):**
+
 ```bash
 sudo pacman -S pamixer
 ```
-
 
 ### Required
 
@@ -26,46 +27,31 @@ git clone --bare https://github.com/bpharris/.dotfiles $HOME/.dotfiles
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 ```
 
-Thereafter one may use `config` as though it were git, with tab-completeion!
+Thereafter one may use `config` as though it were git, with tab-completion!
 (Provided you follow the related optional step).
-
 
 ### Optional
 
 Nota Bene:
-Be sure to use absolute paths in symblolic links to avoid any gotchas
-(i.e. via `$HOME`).
-
-**Mouse config:**
-```bash
-sudo ln -s $HOME/.config/X11/* /etc/X11/xorg.conf.d/
-```
+Be sure to use absolute paths in symbolic links to avoid any gotchas (i.e. via
+`$HOME`).
 
 **Bash completions (including the `config` alias):**
+
 ```bash
 sudo ln -s $HOME/.config/bash-completion/completions/* /usr/share/bash-completion/completions/
 ```
 
-**Pacman hooks:**
-```bash
-# Update init ram fs on kernal and/or nvidia driver update:
-sudo ln -s $HOME/.local/pacman-hooks/nvidia.hook /etc/pacman.d/hooks/nvidia.hook
-
-# Reset user xkbmap on updating X11:
-sudo ln -s $HOME/.local/pacman-hooks/xorg-set-user-xkbmap.hook /etc/pacman.d/hooks/xorg-set-user-xkbmap.hook
-```
-
-
 ### Apply Theme to Flatpak
 
 The easiest way is via
-[flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal),
-in the settings for `All Applications` expose the folders:
+[flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal), in the
+settings for `All Applications` expose the folders:
 
 1. `~/.icons`
-2. `~/.themes`
+1. `~/.themes`
 
-then set the GTK environment variables:
+Then set the GTK environment variables:
 
 ```sh
 ICON_THEME=bpharris
@@ -73,22 +59,23 @@ GTK_THEME=bpharris
 ```
 
 For more info see the
-[itsfoss article](https://itsfoss.com/flatpak-app-apply-theme/).
-
-
+[itsfoss article](https://itsfoss.com/flatpak-app-apply-theme/).
 
 ## Extensions
 
 Some optional additional configuration.
 
-
 ### Emoji Picker
 
-For install instructions see: https://github.com/fdw/rofimoji
+The `rofimoji` package can be installed via `pacman`, however, I had issues with
+this version and as such the `.local/bin/rofimoji` has been added to run
+`rofimoji` from `pip` (installed via `pip install rofimoji`).
 
-Note: `rofimoji` supports `wofi` by default, so this works for wayland also.
+Note:
+`rofimoji` supports `wofi` by default, so this works for Wayland also.
 
 Use via:
+
 ```bash
 # equivalent to `--action print type`
 rofimoji
@@ -110,23 +97,18 @@ rofimoji -a copy print
 rofimoji -a print copy type
 ```
 
-
-
-## Unhandled Additions
-
-Some related things I like to do that aren't covered yet.
-
-* gtk / qt themes
-* grub config
-* plymouth config
-* ufw config
-
-
-
 ## Todo
 
-* refactor config files
-* personal gtk/qt themes
-* auto install script
-* move to pipewire / pipewire-jack
+- new gtk/qt theme - use existing?
+  See ml4w
 
+- tmux?
+  Nice for nvim + terminal sessions?
+
+- move to pipewire / pipewire-jack
+
+- ufw config
+
+- plymouth config
+
+- grub config - don't display a load of rubbish
