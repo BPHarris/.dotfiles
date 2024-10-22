@@ -1,0 +1,60 @@
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.bright]
+black = "#323232"
+blue = "#1267a5"
+cyan = "#61c4c6"
+green = "#5c8b59"
+magenta = "#8910ad"
+red = "#993e36"
+white = "#e0e0e0"
+yellow = "#aa9c30"
+
+[colors.normal]
+black = "#080808"
+blue = "#1b4666"
+cyan = "#5e8b8d"
+green = "#54964f"
+magenta = "#5e196d"
+red = "#cf4f43"
+white = "#646464"
+yellow = "#d17536"
+
+[colors.primary]
+background = "#161616"
+foreground = "#f5f5f5"
+
+[env]
+TERM = "alacritty"
+
+[font]
+size = 13
+
+[font.bold]
+family = "FiraCode Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "FiraCode Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "FiraCode Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font Mono"
+style = "Regular"
+
+[window]
+decorations_theme_variant = "Dark"
+opacity = 0.95
+
+[window.dimensions]
+columns = 160
+lines = 40
+
+[window.padding]
+x = 8
+y = 6
