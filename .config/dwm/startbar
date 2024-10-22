@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Polybar
-polybar-msg cmd quit
-polybar main --reload > /tmp/polybar-dwm.log 2>&1 &
-
