@@ -5,13 +5,21 @@
 [[ $- != *i* ]] && return
 
 
+# Custom profile
+# ~/.config/custom/profile should not be committed to the dotfiles repo
+# But it allows for work only config, etc.
+[[ -f ~/.config/custom/profile ]] && . ~/.config/custom/profile
+
+
 # Dotfiles
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 config config --local status.showUntrackedFiles no
 
 
 # XDG base dirs
-source xdg-base-dirs
+if command -v xdg-base-dirs >/dev/null 2>&1; then
+	source xdg-base-dirs
+fi
 
 
 #
@@ -135,7 +143,7 @@ alias lla="ls -Alh"
 alias egrep="grep -E"
 alias fgrep="grep -F"
 
-# Saftey
+# Safety
 alias mv="mv -i"
 alias rm="rm -I"
 alias cp="cp -i"
@@ -145,12 +153,6 @@ if command -v emacs &> /dev/null ; then
 	alias emacs="emacsclient -c -a 'emacs'"
 fi
 
-# MPV
-# Distinguish between mpv from terminal and other (xdg-open, etc)
-#	terminal:	WM_CLASS(STRING) = "swallow-mpv", "mpv"
-#	other:		WM_CLASS(STRING) = "gl", "mpv"
-alias mpv="mpv --x11-name='swallow-mpv'"
-
 
 #
 # Bash prompt
@@ -158,7 +160,7 @@ alias mpv="mpv --x11-name='swallow-mpv'"
 # See: https://man.archlinux.org/man/bash.1#PROMPTING
 #
 
-export PS1="${BOLD}${RED}\w ${GREEN}\$${RESET} "
+export PS1="${BOLD}${CYAN}\w ${GREEN}\$${RESET} "
 export PS2="${BOLD}${BLUE}>${RESET} "
 export PS3=""
 export PS4="${BOLD}${BLUE}+${RESET} "

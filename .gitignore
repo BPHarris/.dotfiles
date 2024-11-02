@@ -1,2 +1,5 @@
 .dotfiles
 
+# Explicitly ignore system specific profile in case it is accidentally committed
+.config/custom/profile
+
