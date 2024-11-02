@@ -13,6 +13,7 @@ NAME=$(basename "$0")
 
 MISC_ID=86000
 MUTE_ID=86001
+MUTE_MIC_ID=86003
 VOLUME_ID=86002
 
 
@@ -30,9 +31,10 @@ usage() {
 	echo "    $NAME command"
 	echo ""
 	echo "commands:"
-	echo "    toggle-mute -- toggle mute and notify"
-	echo "    volume-up   -- increase volume by $STEP and notify"
-	echo "    volume-down -- decrease volume by $STEP and notify"
+	echo "    toggle-mute     -- toggle mute and notify"
+	echo "    toggle-mute-mic -- toggle mute microphone and notify"
+	echo "    volume-up       -- increase volume by $STEP and notify"
+	echo "    volume-down     -- decrease volume by $STEP and notify"
 	exit 0
 }
 
@@ -62,6 +64,18 @@ mute() {
 	fi
 }
 
+mute_mic() {
+	source_id=$(pamixer --list-sources | grep "input" | head -n 1 | awk '{print $1}')
+
+	pamixer --source "$source_id" -t
+
+	if [ "$(pamixer --source "$source_id" --get-mute)" = "true" ] ; then
+		notify-send -r "$MUTE_MIC_ID" -t "$DURATION" -i "microphone-sensitivity-muted-symbolic" "Microphone" "Muted"
+	else
+		notify-send -r "$MUTE_MIC_ID" -t "$DURATION" -i "microphone-sensitivity-high-symbolic" "Microphone" "Unmuted"
+	fi
+}
+
 
 up() {
 	pamixer --increase "$STEP"
@@ -77,6 +91,8 @@ down() {
 
 if [ "$1" = "toggle-mute" ] ; then
 	mute
+elif [ "$1" = "toggle-mute-mic" ] ; then
+	mute_mic
 elif [ "$1" = "volume-up" ] ; then
 	up
 elif [ "$1" = "volume-down" ] ; then
