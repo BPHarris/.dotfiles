@@ -1,7 +1,5 @@
 require "nvchad.options"
 
-local autocmd = vim.api.nvim_create_autocmd
-
 vim.o.cursorlineopt = "both"
 
 vim.o.spell = true
@@ -10,27 +8,27 @@ vim.o.spelllang = "en_gb"
 -- Indenting
 vim.o.smartindent = true
 
-vim.expandtab = false
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
+vim.o.expandtab = false
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
   callback = function()
-    vim.expandtab = true
-    vim.opt.shiftwidth = 2
-    vim.opt.tabstop = 2
-    vim.opt.softtabstop = 2
+    vim.o.expandtab = true
+    vim.o.shiftwidth = 2
+    vim.o.tabstop = 2
+    vim.o.softtabstop = 2
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function()
-    vim.expandtab = true
-    vim.opt.shiftwidth = 4
-    vim.opt.tabstop = 4
-    vim.opt.softtabstop = 4
+    vim.o.expandtab = true
+    vim.o.shiftwidth = 4
+    vim.o.tabstop = 4
+    vim.o.softtabstop = 4
   end,
 })
 
@@ -39,7 +37,7 @@ vim.opt.relativenumber = true
 vim.o.colorcolumn = "88,100,120"
 
 -- Restore cursor position
-autocmd("BufReadPost", {
+vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
     local line = vim.fn.line "'\""
