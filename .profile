@@ -64,9 +64,12 @@ append_path "/root/.local/bin"
 # XDG user dirs
 #
 
-# xdg-user-dirs-update expects that paths exist so create /tmp dirs
-mkdir -p /tmp/desktop
-mkdir -p /tmp/public
+if [ ! -d "$HOME/.local/desktop" ]; then
+    mkdir -p "$HOME/.local/desktop"
+fi
+if [ ! -d "$HOME/.local/publicshare" ]; then
+    mkdir -p "$HOME/.local/publicshare"
+fi
 
 
 #
