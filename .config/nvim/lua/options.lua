@@ -5,6 +5,8 @@ vim.o.cursorlineopt = "both"
 vim.o.spell = true
 vim.o.spelllang = "en_gb"
 
+vim.o.updatetime = 100
+
 -- Indenting
 vim.o.smartindent = true
 
@@ -35,6 +37,14 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Line numbers, rules, etc.
 vim.opt.relativenumber = true
 vim.o.colorcolumn = "88,100,120"
+
+-- Auto reload externally modified files
+vim.o.autoread = true
+vim.api.nvim_create_augroup("checktime", { clear = true })
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  group = "checktime",
+  command = "checktime",
+})
 
 -- Restore cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {
