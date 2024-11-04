@@ -6,6 +6,7 @@ local options = {
     cpp = { "astyle" },
     rust = { "rustfmt" },
     markdown = { "mdformat", "mdslw" },
+    zig = { "zigfmt" },
 
     ["*"] = { "codespell" }, -- always
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured
