@@ -3,3 +3,6 @@
 # Explicitly ignore system specific profile in case it is accidentally committed
 .config/custom/profile
 
+# Ignore nvim spell files (at least for now)
+.config/nvim/spell
+
