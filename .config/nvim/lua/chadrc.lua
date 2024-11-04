@@ -8,11 +8,13 @@ local M = {}
 
 M.base46 = {
   theme = "pastelbeans",
+  transparency = true,
 
-  -- hl_override = {
-  -- 	Comment = { italic = true },
-  -- 	["@comment"] = { italic = true },
-  -- },
+  hl_override = {
+    ColorColumn = { bg = "#161616" },
+    -- Comment = { italic = true },
+    -- ["@comment"] = { italic = true },
+  },
 }
 
 M.lsp = {

@@ -51,7 +51,7 @@ style = "Regular"
 decorations_theme_variant = "Dark"
 opacity = 0.90
 
-padding = { x = 6, y = 4 }
+padding = { x = 10, y = 2 }
 dynamic_padding = true
 
 [window.dimensions]

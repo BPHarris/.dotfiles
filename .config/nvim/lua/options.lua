@@ -62,6 +62,21 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+-- -- Alacritty: toggle padding on enter/exit nvim
+-- if vim.env.TERM == "alacritty" or vim.env.TMUX ~= nil then
+--   vim.api.nvim_create_autocmd({ "VimEnter", "FocusGained"}, {
+--     callback = function()
+--       os.execute "alacritty msg config window.padding.x=0 window.padding.y=0"
+--     end,
+--   })
+--
+--   vim.api.nvim_create_autocmd({ "VimLeave", "FocusLost" }, {
+--     callback = function()
+--       os.execute "alacritty msg config --reset"
+--     end,
+--   })
+-- end
+
 -- Barbecue
 -- Default config from github
 require("barbecue").setup {
