@@ -1,26 +1,26 @@
 {
 	"reload": true,
 
-    "height": 52,
+    "height": 46,
     "spacing": 6,
 
     "include": [
         "~/.config/waybar/modules.json"
-    ],    
+    ],
 
     "modules-left": [
         "hyprland/workspaces",
         "hyprland/window"
     ],
     "modules-center": [
-        "clock", 
+        "clock",
     ],
     "modules-right": [
-        // "network", 
-        "pulseaudio", 
-        "cpu", 
-        "memory", 
-        "battery", 
+        // "network",
+        "pulseaudio",
+        "cpu",
+        "memory",
+        "battery",
         "tray",
         "custom/exit"
     ]

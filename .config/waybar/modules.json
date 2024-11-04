@@ -55,7 +55,7 @@
         "format": "D {percentage_used}% ",
         "path": "/",
         "on-click": "alacritty -e htop"
-    }, 
+    },
 
     "hyprland/language": {
         "format": "/ K {short}"
@@ -67,7 +67,7 @@
             "transition-duration": 300,
             "children-class": "not-memory",
             "transition-left-to-right": false
-        },        
+        },
         "modules": [
             "custom/system",
             "disk",
@@ -76,7 +76,7 @@
             "hyprland/language"
         ]
     },
-    
+
     "network": {
         "format": "🌐",
         "format-disconnected": "❌", //An empty format will hide the module.
@@ -144,7 +144,7 @@
             "activated": "",
             "deactivated": ""
         },
-        "on-click-right": "hyprlock"        
+        "on-click-right": "hyprlock"
     }
 }
 
