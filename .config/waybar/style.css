@@ -316,7 +316,7 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #tray {
-    margin: 0px 16px 0px 12px;
+    margin: 0px 24px 0px 12px;
 }
 
 #tray > .passive {
