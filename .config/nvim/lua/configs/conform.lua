@@ -7,6 +7,7 @@ local options = {
     rust = { "rustfmt" },
     markdown = { "mdformat", "mdslw" },
     zig = { "zigfmt" },
+    bash = { "shfmt" },
 
     ["*"] = { "codespell" }, -- always
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured
