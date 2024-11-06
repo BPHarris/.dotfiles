@@ -18,6 +18,7 @@
     "modules-right": [
         // "network",
         "pulseaudio",
+        "custom/g703",
         "cpu",
         "memory",
         "battery",

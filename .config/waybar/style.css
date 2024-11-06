@@ -152,7 +152,6 @@ window#waybar.empty #window {
 #custom-appmenu,
 #clock {
 	margin-right: 20px;
-	font-size: 20px;
 	font-weight: bold;
 	color: @iconcolor;
 	padding: 4px 10px 2px 10px;
@@ -171,7 +170,7 @@ window#waybar.empty #window {
 #custom-quicklink10 {
 	padding: 0px;
 	margin-right: 7px;
-	font-size: 20px;
+	font-size: 16px;
 	color: @iconcolor;
 }
 
@@ -337,6 +336,27 @@ window#waybar.empty #window {
 	-gtk-icon-effect: highlight;
 	background-color: #eb4d4b;
 }
+
+/* -----------------------------------------------------
+ * G703
+ * ----------------------------------------------------- */
+
+#custom-g703 {
+	font-size: 16px;
+	font-weight: bold;
+	color: @iconcolor;
+	padding: 4px 10px 2px 10px;
+	background-color: @backgroundlight;
+	color: @textcolor2;
+	border-radius: 4px;
+	margin: 10px 10px 10px 0px;
+}
+
+#custom-g703.charging {}
+
+#custom-g703.battery {}
+
+#custom-g703.battery-low {}
 
 /* -----------------------------------------------------
  * Other

@@ -29,6 +29,14 @@
         "tooltip": false
     },
 
+    "custom/g703": {
+        "exec": "~/.config/waybar/scripts/mouse_battery.sh",
+        "return-type": "json",
+        "interval": 30,
+        "format": "{}",
+        "on-click": "solaar"
+    },
+
     "tray": {
         "icon-size": 16,
         "spacing": 12
