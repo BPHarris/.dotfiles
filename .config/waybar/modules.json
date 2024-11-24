@@ -50,12 +50,10 @@
 
 
     "cpu": {
-        "format": " C {usage:>3}% ",
-        "on-click": "alacritty -e htop"
+        "format": "{usage:>3}% &#xf2db; "
     },
     "memory": {
-        "format": "| M {percentage:>3}%  ",
-        "on-click": "alacritty -e htop"
+        "format": "{percentage:>3}% &#xf538; "
     },
 
     "disk": {
@@ -63,10 +61,6 @@
         "format": "D {percentage_used}% ",
         "path": "/",
         "on-click": "alacritty -e htop"
-    },
-
-    "hyprland/language": {
-        "format": "/ K {short}"
     },
 
     "group/hardware": {

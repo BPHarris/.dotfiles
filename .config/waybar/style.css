@@ -20,12 +20,8 @@
 }
 
 window#waybar {
-	background-color: rgba(24, 24, 24, 0.86);
-
-	/* naive blur effect on bar */
-	box-shadow: 0 0px 20px rgba(24, 24, 24, 0.1) inset;
-
-	border-bottom: 1px solid #ffffff;
+	background-color: rgba(24, 24, 24, 1.0);
+	border-bottom: 1px solid #dedede;
 
 	transition-property: background-color;
 	transition-duration: .5s;
@@ -204,10 +200,14 @@ window#waybar.empty #window {
 #memory,
 #cpu,
 #language {
-	margin: 0px;
 	padding: 0px;
 	font-size: 16px;
-	color: @iconcolor;
+	font-weight: bold;
+	color: @textcolor2;
+
+	margin: 10px 10px 10px 0px;
+	border-radius: 4px;
+	background-color: @backgrounddark;
 }
 
 #language {
