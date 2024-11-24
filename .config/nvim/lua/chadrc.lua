@@ -14,6 +14,7 @@ M.base46 = {
     ColorColumn = { bg = "#161616" },
     TelescopeSelection = { bg = "grey", fg = "white" },
     QuickFixLine = { bg = "black" },
+    Operator = { fg = "red" },
   },
 }
 
