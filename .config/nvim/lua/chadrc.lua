@@ -12,8 +12,8 @@ M.base46 = {
 
   hl_override = {
     ColorColumn = { bg = "#161616" },
-    -- Comment = { italic = true },
-    -- ["@comment"] = { italic = true },
+    TelescopeSelection = { bg = "grey", fg = "white" },
+    QuickFixLine = { bg = "black" },
   },
 }
 
@@ -24,12 +24,9 @@ M.lsp = {
 M.ui = {
   statusline = {
     theme = "vscode_colored",
-    modules = {
-      -- TODO Why does this give a lua import error?
-      custom_cursor = function()
-        return "%#St_Pos_sep#█%#St_Pos_bg# %#St_Pos_txt# %l, %c | %p█"
-      end,
-    },
+  },
+  tabufline = {
+    enabled = false,
   },
 }
 

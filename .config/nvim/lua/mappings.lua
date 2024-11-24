@@ -4,6 +4,23 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
+-- Quit
+map("n", "<C-x>", ":qall<CR>", { desc = "Quit" })
+
+-- Switch and close buffers without tabufline
+map("n", "<tab>", ":bnext<CR>", { desc = "Goto next buffer" })
+map("n", "<S-tab>", ":bprevious<CR>", { desc = "Goto previous buffer" })
+map("n", "<leader>x", function()
+  local buf_count = #vim.fn.getbufinfo { buflisted = 1 }
+
+  if buf_count == 1 then
+    vim.cmd "new"
+    vim.cmd "bdelete #"
+  else
+    vim.cmd "bdelete"
+  end
+end, { desc = "Close current buffer" })
+
 -- Show lsp hover
 map("n", "<leader>st", function()
   vim.lsp.buf.hover()

@@ -12,6 +12,27 @@ return {
     end,
   },
 
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      defaults = {
+        path_display = { "smart" },
+        results_title = false,
+        dynamic_preview_title = true,
+      },
+      pickers = {
+        buffers = {
+          initial_mode = "normal",
+          mappings = {
+            n = {
+              ["d"] = "delete_buffer",
+            },
+          },
+        },
+      },
+    },
+  },
+
   -- Winbar
   {
     "utilyre/barbecue.nvim",
