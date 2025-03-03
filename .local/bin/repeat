@@ -1,0 +1,94 @@
+#!/bin/env python3
+from __future__ import annotations
+
+import argparse
+import shutil
+import subprocess
+import time
+from typing import TYPE_CHECKING
+
+try:
+    import tqdm
+except ImportError:
+    tqdm = None
+
+if TYPE_CHECKING:
+    from typing import Final, Generator, Iterator, TypeVar
+
+    T = TypeVar("T")
+
+
+MAXIMUM_ATTEMPTS: Final = 1_000_000
+
+NO_OUTPUT: Final = "<nil>"
+
+WIDTH: Final = shutil.get_terminal_size().columns
+HEAVY_UNDERLINE: Final = "=" * WIDTH
+LIGHT_UNDERLINE: Final = "-" * WIDTH
+
+
+def run_command(command: list[str]) -> tuple[int, str, str]:
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, check=False)
+        return result.returncode, result.stdout, result.stderr
+    except subprocess.CalledProcessError as e:
+        return 1, e.stdout, e.stderr
+
+
+def yield_with_progress(iterator: Iterator[T], size: int) -> Generator[T, None, None]:
+    for i, v in enumerate(iterator, start=1):
+        print(f"{i} / {size}", end="\r")
+        yield v
+    print(end="\n")
+
+
+def printf(message: str, *, fmt: str, reset: str = "\033[0m") -> None:
+    print(f"{fmt}{message}{reset}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Repeat a command until it fails.")
+    parser.add_argument("-n", type=int, help="Maximum number of attempts")
+    parser.add_argument("command", nargs=argparse.REMAINDER, help="Command to repeat")
+
+    args = parser.parse_args()
+    max_attempts = args.n if args.n is not None else MAXIMUM_ATTEMPTS
+
+    if tqdm is not None:
+        # iterator = tqdm.tqdm(range(max_attempts), ascii="░▒▓█")
+        iterator = tqdm.tqdm(
+            range(max_attempts),
+            bar_format="{percentage:3.0f}% {bar} {n_fmt}/{total_fmt} {elapsed} {remaining} {rate_fmt}",
+            ascii=" ⎯",
+        )
+    else:
+        iterator = yield_with_progress((i for i in range(max_attempts)), max_attempts)
+
+    start_time = time.perf_counter()
+    for i, _ in enumerate(iterator, start=1):
+        status, stdout, stderr = run_command(args.command)
+        if status:
+            printf(f"Failed (attempt: {i}, status: {status})", fmt="\033[1m\033[32m")
+            printf(HEAVY_UNDERLINE, fmt="\033[1m")
+            print()
+
+            printf("stdout", fmt="\033[1m\033[96m")
+            printf(LIGHT_UNDERLINE, fmt="\033[1m")
+            print(stdout or NO_OUTPUT)
+            print()
+
+            printf("stderr", fmt="\033[1m\033[31m")
+            printf(LIGHT_UNDERLINE, fmt="\033[1m")
+            print(stderr or NO_OUTPUT)
+
+            break
+
+    elapsed_time = time.perf_counter() - start_time
+    print()
+    print(f"Finished in {elapsed_time:.3f}s")
+
+    return 0
+
+
+if __name__ == "__main__":
+    exit(main())
