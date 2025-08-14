@@ -74,6 +74,11 @@ this version and as such the `.local/bin/rofimoji` has been added to run
 Note:
 `rofimoji` supports `wofi` by default, so this works for Wayland also.
 
+Dependencies:
+```bash
+sudo pacman -Syu wofi wtype wl-clipboard
+```
+
 Use via:
 
 ```bash
