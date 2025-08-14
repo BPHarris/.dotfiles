@@ -17,11 +17,12 @@
 # Exports
 #
 
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 export TERMINAL="alacritty"
-export BROWSER="brave"
+export BROWSER="zen"
 export READER="zathura"
+export PAGER="less"
 
 
 #
