@@ -2,12 +2,12 @@
 
 #
 # ~/.local/bin/xdg.sh
-#          _             _     
-# __  ____| | __ _   ___| |__  
-# \ \/ / _` |/ _` | / __| '_ \ 
+#          _             _
+# __  ____| | __ _   ___| |__
+# \ \/ / _` |/ _` | / __| '_ \
 #  >  < (_| | (_| |_\__ \ | | |
 # /_/\_\__,_|\__, (_)___/_| |_|
-#            |___/             
+#            |___/
 #
 # XDG directory configurations
 #
@@ -31,6 +31,7 @@ export XDG_USER_DIRS="$XDG_CONFIG_HOME"/user-dirs.dirs
 #
 
 create () { [ -d $1 ] || ( mkdir -p $1 && echo "Created $1") ; }
+create_silent () { [ -d $1 ] ||  mkdir -p $1 ; }
 
 create "$XDG_CONFIG_HOME"
 create "$XDG_CACHE_HOME"
@@ -56,7 +57,7 @@ export HISTFILE="$XDG_STATE_HOME"/bash/history
 
 # Bash completion
 create "$XDG_CONFIG_HOME"/bash-completion
-export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion 
+export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion
 
 # Vim / Neovim / Gvim
 # Allows for separate configs for each
@@ -89,8 +90,8 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/startup.py
 
 
 # Go
-create "$XDG_DATA_HOME"/go 
-export GOPATH="$XDG_DATA_HOME"/go 
+create "$XDG_DATA_HOME"/go
+export GOPATH="$XDG_DATA_HOME"/go
 
 # Rust#Cargo
 create "$XDG_DATA_HOME"/cargo
@@ -103,7 +104,7 @@ export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 # Node Package Manager
 create "$XDG_CONFIG_HOME"/npm/config
 create "$XDG_CACHE_HOME"/npm
-create "$XDG_RUNTIME_DIR"/npm
+create_silent "$XDG_RUNTIME_DIR"/npm
 create "$XDG_DATA_HOME"/npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 
