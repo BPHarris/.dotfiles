@@ -1,5 +1,54 @@
 .dotfiles
 
+# Never track for privacy/security
+# Not fine:
+.ssh
+# I'm not sure:
+.config/keepassxc
+# Probably fine
+.config/gh
+
+# Non-config XDG dirs
+.cache
+.local/*
+!.local/bin/
+!.local/bin/**
+
+# Can't be moved to XDG base dirs
+# And I (probably) never want to track
+.cargo
+.mozilla
+.var
+.zen
+
+# Can't be moved to XDG base dirs
+# But I might want to track at some point
+.hplip
+
+# XDG user dirs
+# Mine
+downloads
+documents
+music
+pictures
+videos
+# General
+Desktop
+Downloads
+Templates
+Public
+Documents
+Music
+Pictures
+Videos
+
+# Crud
+# This stuff seems like it just shouldn't be in .config etc
+.config/go
+.config/Nextcloud
+.config/pulse
+.config/QtProject.conf
+
 # Explicitly ignore system specific profile in case it is accidentally committed
 .config/custom/profile
 
