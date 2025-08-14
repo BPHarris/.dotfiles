@@ -9,10 +9,11 @@ local options = {
     zig = { "zigfmt" },
     bash = { "shfmt" },
 
-    ["*"] = { "codespell" }, -- always
+    ["*"] = {}, -- always
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured
   },
   formatters = {
+    mdformat = { prepend_args = { "--wrap", "no" } },
     mdslw = { prepend_args = { "--stdin-filepath", "$FILENAME" } },
   },
 

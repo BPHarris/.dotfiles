@@ -58,25 +58,6 @@ return {
     },
   },
 
-  -- Neotest
-  -- TODO Is the config actually loading?
-  -- {
-  --   "nvim-neotest/neotest",
-  --   dependencies = {
-  --     "nvim-neotest/nvim-nio",
-  --     "nvim-lua/plenary.nvim",
-  --     "antoinemadec/FixCursorHold.nvim",
-  --     "nvim-treesitter/nvim-treesitter",
-  --   },
-  --   opts = require "configs.neotest",
-  -- },
-  -- {
-  --   "nvim-neotest/neotest-python",
-  --   dependencies = {
-  --     "nvim-neotest/neotest",
-  --   },
-  -- },
-
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
