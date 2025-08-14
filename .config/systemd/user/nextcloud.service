@@ -1,0 +1,11 @@
+[Unit]
+Description=Nextcloud Client
+After=gnome-keyring.service
+Requires=gnome-keyring.service
+
+[Service]
+ExecStart=/usr/bin/nextcloud
+Restart=on-failure
+
+[Install]
+WantedBy=hyprland-session.target

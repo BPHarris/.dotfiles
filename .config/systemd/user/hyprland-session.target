@@ -1,0 +1,2 @@
+[Unit]
+Description=Hyprland session target. This is the root in the auto-start dependency tree. See hyprland.conf.
