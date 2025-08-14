@@ -82,11 +82,15 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 alias gpg2="gpg2 --homedir $GNUPGHOME"
 
 # Python REPL
-create "$XDG_DATA_HOME"/python
-create "$XDG_CONFIG_HOME"/python
-export PYTHONUSERBASE="$XDG_DATA_HOME"/python
+create "$XDG_STATE_HOME"/python
+export PYTHON_HISTORY="$XDG_STATE_HOME"/python/.python_history
+touch "$PYTHON_HISTORY"
+
+create "$XDG_CACHE_HOME"/python
 export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME"/python
-export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/startup.py
+
+create "$XDG_DATA_HOME"/python
+export PYTHONUSERBASE="$XDG_DATA_HOME"/python
 
 
 # Go
