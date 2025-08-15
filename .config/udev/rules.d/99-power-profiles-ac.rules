@@ -1,0 +1,5 @@
+ACTION=="change", SUBSYSTEM=="power_supply", \
+	ATTR{online}=="1", \
+	ATTR{type}=="Mains", \
+	RUN+="/usr/bin/powerprofilesctl set performance", \
+	RUN+="/usr/bin/brightnessctl set 100%"

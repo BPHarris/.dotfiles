@@ -49,6 +49,26 @@ Be sure to use absolute paths in symbolic links to avoid any gotchas (i.e. via
 sudo ln -s $HOME/.config/bash-completion/completions/* /usr/share/bash-completion/completions/
 ```
 
+### Set `udev` Rules
+
+There are some `udev` rules in `.config/udev/rules.d/*.rules` which must be
+symlinked to `/etc/udev/rules.d/*.rules` to take effect.
+These are optional and I only use them on my laptop.
+
+These rules include:
+
+- On switching to battery:
+  set power profile to battery saving, set brightness to 50%, and disable
+  Bluetooth if no devices are connected;
+- On switching to mains:
+  set power profile to performance, set brightness to 100%.
+
+These can be symlinked manually or by running the helper script:
+
+```sh
+.config/udev/apply.sh
+```
+
 ### Apply Theme to Flatpak
 
 The easiest way is via
