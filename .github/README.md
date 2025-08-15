@@ -14,6 +14,13 @@ sudo pacman -S git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-e
 
 The complete Nerd Fonts package should be installed for maximum compatibility.
 
+**Screenshots:**
+
+```bash
+sudo pacman -S grim swappy
+yay -S grimblast-git
+```
+
 **PulseAudio scripts (.local/bin/xf86-pulseaudio, etc.):**
 
 ```bash
@@ -75,6 +82,7 @@ Note:
 `rofimoji` supports `wofi` by default, so this works for Wayland also.
 
 Dependencies:
+
 ```bash
 sudo pacman -Syu wofi wtype wl-clipboard
 ```

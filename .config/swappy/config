@@ -1,0 +1,4 @@
+[Default]
+early_exit=true
+save_dir=$XDG_PICTURES_DIR/screenshots
+save_filename_format=swappy_%Y-%m%-dT%H-%M-%S.png
