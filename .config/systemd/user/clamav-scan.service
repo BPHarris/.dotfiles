@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly ClamAV scan (clamdscan via user script)
+ConditionPathIsExecutable=%h/.local/bin/clamav-scan.sh
+
+[Service]
+Type=oneshot
+Nice=19
+Environment=PATH=/usr/local/bin:/usr/bin:%h/.local/bin
+ExecStart=%h/.local/bin/clamav-scan.sh
+# Below would allow `exit 1` (say on infections) to be a successful job
+# SuccessExitStatus=0 1

@@ -1,0 +1,12 @@
+[Unit]
+Description=Run clamav-scan.service weekly
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=30m
+AccuracySec=1min
+Unit=clamav-scan.service
+
+[Install]
+WantedBy=timers.target
