@@ -1,55 +1,32 @@
 #!/bin/sh
-
-#
-# ~/.local/bin/xdg.sh
-#          _             _
-# __  ____| | __ _   ___| |__
-# \ \/ / _` |/ _` | / __| '_ \
-#  >  < (_| | (_| |_\__ \ | | |
-# /_/\_\__,_|\__, (_)___/_| |_|
-#            |___/
-#
-# XDG directory configurations
-#
-# Author: bpharris@pm.me
 # See:    https://wiki.archlinux.org/title/XDG_Base_Directory
-#
-
 
 # Configure XDG base directories
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_CACHE_HOME="$HOME"/.cache
+export XDG_DATA_HOME="$HOME"/.local/share
+export XDG_STATE_HOME="$HOME"/.local/state
 
 # Load XDG user directories, when not root
-export XDG_USER_DIRS="$XDG_CONFIG_HOME"/user-dirs.dirs
-[ "$(id -u)" -ne "0" ] && [ -f "$XDG_USER_DIRS" ] && . "$XDG_USER_DIRS"
+if [ "$(id -u)" -ne 0 ] && [ -r "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
+	# shellcheck source=/dev/null
+	. "$XDG_CONFIG_HOME/user-dirs.dirs"
+fi
 
 #
 # Create
 #
-
-create () { [ -d $1 ] || ( mkdir -p $1 && echo "Created $1") ; }
-create_silent () { [ -d $1 ] ||  mkdir -p $1 ; }
+create() { [ -d "$1" ] || (mkdir -p "$1" && echo "Created $1"); }
+create_silent() { [ -d "$1" ] || mkdir -p "$1"; }
 
 create "$XDG_CONFIG_HOME"
 create "$XDG_CACHE_HOME"
 create "$XDG_DATA_HOME"
 create "$XDG_STATE_HOME"
 
-
 #
 # Program specific configuration
 #
-
-# X11
-create "$XDG_CACHE_HOME"/X11
-export USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
-export USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
-export ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"
-export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 # Bash
 create "$XDG_STATE_HOME"/bash
@@ -58,12 +35,6 @@ export HISTFILE="$XDG_STATE_HOME"/bash/history
 # Bash completion
 create "$XDG_CONFIG_HOME"/bash-completion
 export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion
-
-# Vim / Neovim / Gvim
-# Allows for separate configs for each
-create "$XDG_STATE_HOME"/vim
-export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/ginit.lua" | so $MYGVIMRC'
-export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.lua" | so $MYVIMRC'
 
 # Less
 create "$XDG_CONFIG_HOME"/less
@@ -74,12 +45,12 @@ export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 touch "$XDG_CONFIG_HOME"/wgetrc
 touch "$XDG_CACHE_HOME"/wget-hsts
 export WGETRC="$XDG_CONFIG_HOME"/wgetrc
-alias wget="wget --hsts-file=\"$XDG_CACHE_HOME/wget-hsts\""
+alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 
 # GnuPG
 create "$XDG_DATA_HOME"/gnupg
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-alias gpg2="gpg2 --homedir $GNUPGHOME"
+alias gpg2='gpg2 --homedir "$GNUPGHOME"'
 
 # Python REPL
 create "$XDG_STATE_HOME"/python
@@ -91,7 +62,6 @@ export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME"/python
 
 create "$XDG_DATA_HOME"/python
 export PYTHONUSERBASE="$XDG_DATA_HOME"/python
-
 
 # Go
 create "$XDG_DATA_HOME"/go
@@ -112,12 +82,14 @@ create_silent "$XDG_RUNTIME_DIR"/npm
 create "$XDG_DATA_HOME"/npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 
-if ! test -f "$XDG_CONFIG_HOME"/npm/npmrc ; then
+if ! test -f "$XDG_CONFIG_HOME"/npm/npmrc; then
 	touch "$XDG_CONFIG_HOME"/npm/npmrc
-	echo "prefix=${XDG_DATA_HOME}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
-	echo "cache=${XDG_CACHE_HOME}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
-	echo "tmp=${XDG_RUNTIME_DIR}/npm" >> "$XDG_CONFIG_HOME"/npm/npmrc
-	echo "init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js" >> "$XDG_CONFIG_HOME"/npm/npmrc
+	{
+		echo "prefix=${XDG_DATA_HOME}/npm"
+		echo "cache=${XDG_CACHE_HOME}/npm"
+		echo "tmp=${XDG_RUNTIME_DIR}/npm"
+	} >>"$XDG_CONFIG_HOME"/npm/npmrc
+	echo "init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js" >>"$XDG_CONFIG_HOME"/npm/npmrc
 fi
 
 # Emacs
@@ -129,4 +101,3 @@ alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 # GNU Parallel
 create "$XDG_CONFIG_HOME"/parallel
 export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
-

@@ -1,9 +1,8 @@
 #!/bin/bash
-
+# shellcheck disable=SC1091
 
 # Only apply to interactive shell
 [[ $- != *i* ]] && return
-
 
 # TODO
 # Redo this.
@@ -12,19 +11,16 @@
 # Custom profile
 # ~/.config/custom/profile should not be committed to the dotfiles repo
 # But it allows for work only config, etc.
-[[ -f ~/.config/custom/profile ]] && . ~/.config/custom/profile
-
+[[ -f "$HOME"/.config/custom/profile ]] && . "$HOME"/.config/custom/profile
 
 # Dotfiles
-alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias config='/usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME"'
 config config --local status.showUntrackedFiles no
-
 
 # XDG base dirs
 if command -v xdg-base-dirs >/dev/null 2>&1; then
 	source xdg-base-dirs
 fi
-
 
 #
 # Shell options
@@ -51,16 +47,14 @@ set -o noclobber
 # Disable ^S/^Q nonsense
 stty -ixon
 
-
 #
 # Functions
 #
 
 # Highlight
-if command -v highlight &> /dev/null ; then
+if command -v highlight &>/dev/null; then
 	alias hl="highlight --stdout -O ansi"
 fi
-
 
 #
 # ANSI / terminfo escape sequences
@@ -97,7 +91,6 @@ UNDERLINE_OFF="\[$(tput rmul)\]"
 
 RESET="\[$(tput sgr0)\]"
 
-
 #
 # Colour program output
 #
@@ -118,14 +111,13 @@ man() {
 	# us - options, arguments, file system paths
 	# ue - seemingly random
 	LESS_TERMCAP_md=$'\e[01;31m' \
-	LESS_TERMCAP_me=$'\e[0m' \
-	LESS_TERMCAP_so=$'\e[01;44;33m' \
-	LESS_TERMCAP_se=$'\e[0m' \
-	LESS_TERMCAP_us=$'\e[01;35m' \
-	LESS_TERMCAP_ue=$'\e[0m' \
-	command man "$@"
+		LESS_TERMCAP_me=$'\e[0m' \
+		LESS_TERMCAP_so=$'\e[01;44;33m' \
+		LESS_TERMCAP_se=$'\e[0m' \
+		LESS_TERMCAP_us=$'\e[01;35m' \
+		LESS_TERMCAP_ue=$'\e[0m' \
+		command man "$@"
 }
-
 
 #
 # Aliases
@@ -147,10 +139,9 @@ alias rm="rm -I"
 alias cp="cp -i"
 
 # Emacs
-if command -v emacs &> /dev/null ; then
+if command -v emacs &>/dev/null; then
 	alias emacs="emacsclient -c -a 'emacs'"
 fi
-
 
 #
 # Bash prompt
@@ -163,13 +154,11 @@ export PS2="${BOLD}${BLUE}>${RESET} "
 export PS3=""
 export PS4="${BOLD}${BLUE}+${RESET} "
 
-
 #
 # Fun
 #
 
 alias starwars="telnet towel.blinkenlights.nl"
-
 
 #
 # Pipx Setup

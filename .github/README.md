@@ -240,6 +240,7 @@ Such as a minimal `nvim` config and `.bashrc` with `ls` aliases, etc.
 
 ## Todo
 
+- Redo `~/.local/bin/repeat` with `rich.progress` and various other improvements.
 - Migrate to new theming on desktop:
   - Move `waybar` mouse battery script to `hyprpanel`.
   - Remove `~/.config/waybar/`.
