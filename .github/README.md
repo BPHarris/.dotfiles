@@ -34,7 +34,7 @@ yay -S --needed grimblast-git
 
 **Optional:**
 
-Here are some interactive shell programs that are nicer and/or prettier than their coreutils, etc counterparts:
+Here are some interactive shell programs that are nicer and/or prettier than their coreutils counterparts:
 
 ```bash
 sudo pacman -S --needed eza lsd bat ripgrep duf dysk dust fd trash-cli sd gping git-delta xh
@@ -71,15 +71,15 @@ git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 sudo ln -s $HOME/.config/bash-completion/completions/* /usr/share/bash-completion/completions/
 ```
 
-This will allow for tab-completion when using the `config` git alias for managing this repo.
+This allows tab-completion when using the `config` git alias for managing this repo.
 
 > [!CAUTION] Be sure to use `"$HOME"` in symbolic links!
 
-## Additional First Time Setup
+## Additional First-Time Setup
 
 ### Enable user `systemd` units
 
-Below are some `systemd` units that can't be enabled by merely existing in the repo which must be enabled manually.
+Below are some `systemd` units that can’t be enabled by merely existing in the repo; they must be enabled manually.
 
 ```bash
 systemctl --user daemon-reload
@@ -91,7 +91,7 @@ systemctl --user enable --now gnome-keyring.service
 # Auto-start Hyprland on TTY1
 systemctl --user enable --now hyprland.service
 
-# Auto-start applications with dependencies when hyprland launches
+# Auto-start applications with dependencies when Hyprland launches
 systemctl --user enable --now hyprland-session.target
 systemctl --user enable --now keepassxc.service
 systemctl --user enable --now nextcloud.service
@@ -106,7 +106,7 @@ systemctl --user list-timers --all
 ### Set `udev` Rules
 
 There are some `udev` rules in `.config/udev/rules.d/*.rules` which must be symlinked to `/etc/udev/rules.d/*.rules` to take effect.
-These are optional and I only use them on my laptop.
+These are optional, and I only use them on my laptop.
 
 These rules include:
 
@@ -122,7 +122,7 @@ These can be symlinked manually or by running the helper script:
 ```
 
 Todo:
-Should there be a `udev1` rule to set desktop CPU governor to performance?
+Should there be a `udev` rule to set the desktop CPU governor to performance?
 Or should I leave this to be handled by `gamemode`?
 
 ### Theming
@@ -152,12 +152,13 @@ gsettings set org.gnome.desktop.interface icon-theme Tela-green-dark
 
 **Qt Theme:**
 
-This is handled via `QGtk3Style` (built in to `qt5` and `qt6`) which tells Qt to follow the GTK theme.
+This is handled via `QGtk3Style` (built into `qt5` and `qt6`), which tells Qt to follow the GTK theme.
 This is enabled by `QT_QPA_PLATFORMTHEME=gtk3` set in `~/.config/hypr/hyprland.conf`.
 
 **Flatpak:**
 
-The easiest way is via [flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal), in the settings for `All Applications` expose the folders:
+The easiest way is via [flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal).
+In the settings for `All Applications`, expose the folders:
 
 1. `~/.local/share/icons/`
 1. `~/.local/share/themes/`
@@ -173,8 +174,8 @@ GTK_THEME=Tela-green-dark
 **Todo:**
 
 - Are Qt icons set correctly?
-- Helper script to check theme automatically (there are a lot of places that variables need to be changed).
-  - Can the Flatpak theming be automated?
+- Helper script to check the theme automatically (there are a lot of places where variables need to be changed).
+  - Can Flatpak theming be automated?
 
 ### Emoji Picker
 
@@ -184,7 +185,7 @@ GTK_THEME=Tela-green-dark
 sudo pacman -S --needed wofi rofimoji wtype wl-clipboard
 ```
 
-**Use via:**
+**Usage:**
 
 ```bash
 # equivalent to `--action print type`
@@ -210,11 +211,11 @@ rofimoji -a print copy type
 ### Neovim
 
 The dotfiles should cover the basic install (though a `:MasonInstallAll` with possible manual plug-in selection is required).
-However, for some features manual intervention will be required, see below.
+However, for some features, manual intervention is required (see below).
 
 **Markdown Formatting:**
 
-For nice markdown formatting a custom install of `mdformat` is required in turn requiring `pipx`.
+For nice Markdown formatting, a custom install of `mdformat` is required, which in turn requires `pipx`.
 
 ```bash
 # Install `pipx`
@@ -234,7 +235,7 @@ The `conform.nvim` settings already use the above `mdformat` install.
 ## Sudo
 
 Todo:
-basic super user config and commands to set it up.
+Basic superuser config and commands to set it up.
 Such as a minimal `nvim` config and `.bashrc` with `ls` aliases, etc.
 
 ## Todo
@@ -249,14 +250,14 @@ Such as a minimal `nvim` config and `.bashrc` with `ls` aliases, etc.
 - New convenience aliases if "improved" utils are installed:
   - `eza` instead of `ls`
     - `la`, `lla`, `ltree`, etc. with icons enabled
-  - I think the others should not be aliased, they should be used by choice.
+  - I think the others should not be aliased; they should be used by choice.
 - Add a full `pacman -S --needed ...` line for all dependencies.
 - UFW?
-  I have to redo this every install right now, bit annoying.
+  I have to redo this every install right now — a bit annoying.
 - Plymouth?
   No need for any files, but include install/setup instructions in this doc.
 - Arch install instructions?
   My install is far enough from vanilla to warrant some explanation here.
-  Even if it is just a description of the install that can then be given to ChatGPT as an interactive setup guide.
-- Super user configs, see above.
-  Keep it very simple, but at least some `bash` config and some common sense `nvim` settings are a must.
+  Even if it’s just a description of the install that can then be given to ChatGPT as an interactive setup guide.
+- Superuser configs (see above).
+  Keep it very simple, but at least some `bash` config and some common-sense `nvim` settings are a must.
