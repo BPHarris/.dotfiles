@@ -13,8 +13,8 @@ local options = {
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured
   },
   formatters = {
-    mdformat = { prepend_args = { "--wrap", "no" } },
-    mdslw = { prepend_args = { "--stdin-filepath", "$FILENAME" } },
+    mdformat = { command = "/home/anon/.local/pipx/bin/mdformat", prepend_args = { "--wrap", "no" } },
+    mdslw = { prepend_args = { "--stdin-filepath", "$FILENAME", "--max-width", "0" } },
   },
 
   format_on_save = {

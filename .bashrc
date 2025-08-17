@@ -170,3 +170,14 @@ export PS4="${BOLD}${BLUE}+${RESET} "
 
 alias starwars="telnet towel.blinkenlights.nl"
 
+
+#
+# Pipx Setup
+#
+
+# Prevent pipx from hijacking `.local/bin`
+export PIPX_BIN_DIR="$HOME/.local/pipx/bin"
+export PIPX_HOME="$HOME/.local/pipx/venvs"
+
+# Created by `pipx`
+export PATH="$PATH:/home/anon/.local/pipx/bin"
