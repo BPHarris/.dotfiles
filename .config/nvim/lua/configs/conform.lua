@@ -7,7 +7,8 @@ local options = {
     rust = { "rustfmt" },
     markdown = { "mdformat", "mdslw" },
     zig = { "zigfmt" },
-    bash = { "shfmt" },
+    sh = { "shellharden", "shfmt" },
+    bssh = { "shellharden", "shfmt" },
 
     ["*"] = {}, -- always
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured
