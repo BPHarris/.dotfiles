@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+alias config='/usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME"'
+
 config push
 
 config push origin live:master || {
