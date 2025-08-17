@@ -77,6 +77,32 @@ This will allow for tab-completion when using the `config` git alias for managin
 
 ## Additional First Time Setup
 
+### Enable user `systemd` units
+
+Below are some `systemd` units that can't be enabled by merely existing in the repo which must be enabled manually.
+
+```bash
+systemctl --user daemon-reload
+
+systemctl --user enable --now clamav-scan.timer
+
+systemctl --user enable --now gnome-keyring.service
+
+# Auto-start Hyprland on TTY1
+systemctl --user enable --now hyprland.service
+
+# Auto-start applications with dependencies when hyprland launches
+systemctl --user enable --now hyprland-session.target
+systemctl --user enable --now keepassxc.service
+systemctl --user enable --now nextcloud.service
+```
+
+**Verify ClamAV timer:**
+
+```bash
+systemctl --user list-timers --all
+```
+
 ### Set `udev` Rules
 
 There are some `udev` rules in `.config/udev/rules.d/*.rules` which must be symlinked to `/etc/udev/rules.d/*.rules` to take effect.
