@@ -9,39 +9,61 @@ My dotfiles.
 **Core:**
 
 ```bash
-sudo pacman -S git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-emoji
+# Minimal:
+sudo pacman -S --needed git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-emoji
+
+# Recommended:
+sudo pacman -S --needed git nerd-fonts ttf-font-awesome terminus-font noto-fonts-emoji
 ```
 
-The complete Nerd Fonts package should be installed for maximum compatibility.
+**Desktop Environment:**
+
+```bash
+sudo pacman -S --needed hyprland hypridle hyprpaper hyprlock xdg-desktop-portal-hyprland polkit-kde-agent wpctl playerctl brightnessctl bluez blueman networkmanager
+yay -S --needed ags-hyprpanel-git
+
+sudo pacman -S --needed alacritty ghostty keepassxc nextcloud-client htop btop tmux
+```
 
 **Screenshots:**
 
 ```bash
-sudo pacman -S grim swappy
-yay -S grimblast-git
+sudo pacman -S --needed grim swappy
+yay -S --needed grimblast-git
 ```
 
-**PulseAudio scripts (.local/bin/xf86-pulseaudio, etc.):**
+**Optional:**
+
+Here are some interactive shell programs that are nicer and/or prettier than their coreutils, etc counterparts:
 
 ```bash
-sudo pacman -S pamixer
+sudo pacman -S --needed eza lsd bat ripgrep duf dysk dust fd trash-cli sd gping git-delta xh
 ```
 
-### Required
+| Program     | Improves | Notes                                  |
+| :---------- | :------- | :------------------------------------- |
+| `eza`       | `ls`     |                                        |
+| `lsd`       | `ls`     |                                        |
+| `bat`       | `cat`    |                                        |
+| `rg`        | `grep`   | Package name is `ripgrep`.             |
+| `duf`       | `df`     |                                        |
+| `dysk`      | `df`     |                                        |
+| `dust`      | `du`     |                                        |
+| `fd`        | `find`   |                                        |
+| `trash-cli` | `rm`     | Uses rubbish bin rather than deleting. |
+| `sd`        | `sed`    |                                        |
+| `gping`     | `ping`   |                                        |
+| `git-delta` | `diff`   | Package name is `git-delta`.           |
+| `xh`        | `curl`   |                                        |
+
+### How to Install
 
 ```bash
 git clone --bare https://github.com/bpharris/.dotfiles $HOME/.dotfiles
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 ```
 
-Thereafter one may use `config` as though it were git, with tab-completion!
-(Provided you follow the related optional step).
-
 ### Optional
-
-Nota Bene:
-Be sure to use absolute paths in symbolic links to avoid any gotchas (i.e. via
-`$HOME`).
 
 **Bash completions (including the `config` alias):**
 
@@ -49,17 +71,21 @@ Be sure to use absolute paths in symbolic links to avoid any gotchas (i.e. via
 sudo ln -s $HOME/.config/bash-completion/completions/* /usr/share/bash-completion/completions/
 ```
 
+This will allow for tab-completion when using the `config` git alias for managing this repo.
+
+> [!CAUTION] Be sure to use `"$HOME"` in symbolic links!
+
+## Additional First Time Setup
+
 ### Set `udev` Rules
 
-There are some `udev` rules in `.config/udev/rules.d/*.rules` which must be
-symlinked to `/etc/udev/rules.d/*.rules` to take effect.
+There are some `udev` rules in `.config/udev/rules.d/*.rules` which must be symlinked to `/etc/udev/rules.d/*.rules` to take effect.
 These are optional and I only use them on my laptop.
 
 These rules include:
 
 - On switching to battery:
-  set power profile to battery saving, set brightness to 50%, and disable
-  Bluetooth if no devices are connected;
+  set power profile to battery saving, set brightness to 50%, and disable Bluetooth if no devices are connected;
 - On switching to mains:
   set power profile to performance, set brightness to 100%.
 
@@ -69,45 +95,70 @@ These can be symlinked manually or by running the helper script:
 .config/udev/apply.sh
 ```
 
-### Apply Theme to Flatpak
+Todo:
+Should there be a `udev1` rule to set desktop CPU governor to performance?
+Or should I leave this to be handled by `gamemode`?
 
-The easiest way is via
-[flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal), in the
-settings for `All Applications` expose the folders:
+### Theming
 
-1. `~/.icons`
-1. `~/.themes`
+**GTK Theme:**
 
-Then set the GTK environment variables:
-
-```sh
-ICON_THEME=bpharris
-GTK_THEME=bpharris
+```bash
+git clone https://github.com/vinceliuice/Orchis-theme.git /tmp/orchis-git
+pushd /tmp/orchis-git
+./install.sh --tweaks black --tweaks solid --tweaks compact --theme green --size compact --libadwaita
+popd
+rm -rf /tmp/orchis-git
 ```
 
-For more info see the
-[itsfoss article](https://itsfoss.com/flatpak-app-apply-theme/).
+**Icon Theme:**
 
-## Extensions
+```bash
+git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/tela-git
+pushd /tmp/tela-git
+./install.sh -c green
+popd
+rm -rf /tmp/tela-git
 
-Some optional additional configuration.
+# GTK does not respect ICON_THEME and settings.ini did not seem to work by itself
+gsettings set org.gnome.desktop.interface icon-theme Tela-green-dark
+```
+
+**Qt Theme:**
+
+This is handled via `QGtk3Style` (built in to `qt5` and `qt6`) which tells Qt to follow the GTK theme.
+This is enabled by `QT_QPA_PLATFORMTHEME=gtk3` set in `~/.config/hypr/hyprland.conf`.
+
+**Flatpak:**
+
+The easiest way is via [flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal), in the settings for `All Applications` expose the folders:
+
+1. `~/.local/share/icons/`
+1. `~/.local/share/themes/`
+
+Then set the environment variables:
+
+```sh
+QT_QPA_PLATFORMTHEME=gtk3
+ICON_THEME=Orchis-Green-Dark-Compact
+GTK_THEME=Tela-green-dark
+```
+
+**Todo:**
+
+- Are Qt icons set correctly?
+- Helper script to check theme automatically (there are a lot of places that variables need to be changed).
+  - Can the Flatpak theming be automated?
 
 ### Emoji Picker
 
-The `rofimoji` package can be installed via `pacman`, however, I had issues with
-this version and as such the `.local/bin/rofimoji` has been added to run
-`rofimoji` from `pip` (installed via `pip install rofimoji`).
-
-Note:
-`rofimoji` supports `wofi` by default, so this works for Wayland also.
-
-Dependencies:
+**Dependencies:**
 
 ```bash
-sudo pacman -Syu wofi wtype wl-clipboard
+sudo pacman -S --needed wofi rofimoji wtype wl-clipboard
 ```
 
-Use via:
+**Use via:**
 
 ```bash
 # equivalent to `--action print type`
@@ -130,18 +181,56 @@ rofimoji -a copy print
 rofimoji -a print copy type
 ```
 
+### Neovim
+
+The dotfiles should cover the basic install (though a `:MasonInstallAll` with possible manual plug-in selection is required).
+However, for some features manual intervention will be required, see below.
+
+**Markdown Formatting:**
+
+For nice markdown formatting a custom install of `mdformat` is required in turn requiring `pipx`.
+
+```bash
+# Install `pipx`
+sudo pacman -S python-pipx
+pipx ensurepath
+
+# Install mdformat with mdformat-tables
+pipx install mdformat
+pipx inject mdformat mdformat-tables
+
+# Double check it worked
+mdformat --help | grep tables
+```
+
+The `conform.nvim` settings already use the above `mdformat` install.
+
+## Sudo
+
+Todo:
+basic super user config and commands to set it up.
+Such as a minimal `nvim` config and `.bashrc` with `ls` aliases, etc.
+
 ## Todo
 
-- new gtk/qt theme - use existing?
-  See ml4w
-
-- tmux?
-  Nice for nvim + terminal sessions?
-
-- move to pipewire / pipewire-jack
-
-- ufw config
-
-- plymouth config
-
-- grub config - don't display a load of rubbish
+- Migrate to new theming on desktop:
+  - Move `waybar` mouse battery script to `hyprpanel`.
+  - Remove `~/.config/waybar/`.
+  - Remove `~/.config/wlogout/`.
+- Move to `ghostty`.
+- Move to `fuzzel` over `wofi`.
+  - This will require either a `rofimoji` change or a new emoji picker.
+- New convenience aliases if "improved" utils are installed:
+  - `eza` instead of `ls`
+    - `la`, `lla`, `ltree`, etc. with icons enabled
+  - I think the others should not be aliased, they should be used by choice.
+- Add a full `pacman -S --needed ...` line for all dependencies.
+- UFW?
+  I have to redo this every install right now, bit annoying.
+- Plymouth?
+  No need for any files, but include install/setup instructions in this doc.
+- Arch install instructions?
+  My install is far enough from vanilla to warrant some explanation here.
+  Even if it is just a description of the install that can then be given to ChatGPT as an interactive setup guide.
+- Super user configs, see above.
+  Keep it very simple, but at least some `bash` config and some common sense `nvim` settings are a must.

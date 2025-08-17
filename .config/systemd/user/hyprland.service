@@ -1,0 +1,16 @@
+[Unit]
+Description=Hyprland Wayland Compositor
+After=graphical.target systemd-user-sessions.service
+
+[Service]
+ExecStart=/usr/bin/Hyprland
+Restart=always
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
+

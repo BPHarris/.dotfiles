@@ -5,6 +5,10 @@
 [[ $- != *i* ]] && return
 
 
+# TODO
+# Redo this.
+# I think a better way for PC-specific profile settings is to have:
+#	~/.config/bash/host.d/$HOSTNAME
 # Custom profile
 # ~/.config/custom/profile should not be committed to the dotfiles repo
 # But it allows for work only config, etc.
@@ -127,14 +131,8 @@ man() {
 # Aliases
 #
 
-if command -v lsd &> /dev/null ; then
-	alias ls="lsd --group-dirs=first"
-	alias lsize="ls -Alh --total-size"
-	alias ltree="ls --tree"
-else
-	alias ls="ls -Xh --group-directories-first --color=auto"
-	alias lsize="ls -Alh --size"
-fi
+alias ls="ls -Xh --group-directories-first --color=auto"
+alias lsize="ls -Alh --size"
 
 alias la="ls -Ah"
 alias ll="ls -lh"

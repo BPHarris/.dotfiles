@@ -52,6 +52,7 @@ append_path () {
 
 append_path "~/.local/bin"
 append_path "~/.local/bin/scripts"
+append_path "~/.local/scripts"
 
 # Doom Emacs
 append_path "~/.config/emacs/bin"

@@ -48,6 +48,14 @@ Videos
 .config/Nextcloud
 .config/pulse
 .config/QtProject.conf
+.config/systemd/user/*.wants/
+.config/systemd/user/pipewire-session-manager.service
+
+# GTK 4 libadwita theming
+# These are symlinks for libadwita theming, don't commit them
+.config/gtk-4.0/assets
+.config/gtk-4.0/gtk-dark.css
+.config/gtk-4.0/gtk.css
 
 # Explicitly ignore system specific profile in case it is accidentally committed
 .config/custom/profile
