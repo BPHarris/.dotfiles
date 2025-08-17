@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+config push
+
+config push origin live:master || {
+	echo "unable to fast-forward origin/master to local live"
+	exit 1
+}
+
+config fetch origin master:master || {
+	echo "unable to fast-forward local master"
+	exit 1
+}
