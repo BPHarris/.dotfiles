@@ -1,7 +1,6 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
 
@@ -16,6 +15,8 @@ return {
     "nvim-telescope/telescope.nvim",
     opts = {
       defaults = {
+        border = true,
+        borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         path_display = { "smart" },
         results_title = false,
         dynamic_preview_title = true,
@@ -33,18 +34,16 @@ return {
     },
   },
 
-  -- Winbar
+  -- breadcrumbs
   {
     "utilyre/barbecue.nvim",
     name = "barbecue",
     version = "*",
     dependencies = {
       "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons", -- optional dependency
+      "nvim-tree/nvim-web-devicons",
     },
-    opts = {
-      -- configurations go here
-    },
+    opts = {},
   },
 
   -- git signs
@@ -75,4 +74,6 @@ return {
       },
     },
   },
+
+  { import = "nvchad.blink.lazyspec" },
 }

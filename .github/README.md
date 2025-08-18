@@ -230,6 +230,9 @@ pipx inject mdformat mdformat-tables
 mdformat --help | grep tables
 ```
 
+Additionally, you must update the `mdformat` executable in `.config/nvim/lua/configs/conform.lua` to reference your user not `/home/anon/`.
+Unfortunately, `$HOME` does not seem to work here.
+
 The `conform.nvim` settings already use the above `mdformat` install.
 
 ## Sudo
@@ -241,10 +244,6 @@ Such as a minimal `nvim` config and `.bashrc` with `ls` aliases, etc.
 ## Todo
 
 - Redo `~/.local/bin/repeat` with `rich.progress` and various other improvements.
-- Redo `nvim` config.
-  Keep the `.git` for `nvchad` that's how updates are done!
-  Put all configuration in `.../lua/custom`.
-  Set up `.gitignore` correctly.
 - Redo `vim` config.
   Either remove it entirely and only use `nvim`.
   Or, only use `nvim` (based) but keep a very minimal, nice `vim` config around.

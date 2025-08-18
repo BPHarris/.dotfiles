@@ -14,13 +14,13 @@ local options = {
     ["*"] = {}, -- always
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured
   },
+
   formatters = {
     mdformat = { command = "/home/anon/.local/pipx/bin/mdformat", prepend_args = { "--wrap", "no" } },
     mdslw = { prepend_args = { "--stdin-filepath", "$FILENAME", "--max-width", "0" } },
   },
 
   format_on_save = {
-    -- These options will be passed to conform.format()
     timeout_ms = 1000,
     lsp_fallback = true,
   },

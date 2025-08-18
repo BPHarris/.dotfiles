@@ -4,6 +4,8 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
+map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
 -- Quit
 map("n", "<C-x>", ":qall<CR>", { desc = "Quit" })
 

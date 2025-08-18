@@ -7,7 +7,7 @@ vim.o.spelllang = "en_gb"
 
 vim.o.updatetime = 100
 
--- Indenting
+-- Indentation
 vim.o.smartindent = true
 
 vim.o.expandtab = false
@@ -47,7 +47,18 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.relativenumber = true
 vim.o.colorcolumn = "88,100,120"
 
--- Auto reload externally modified files
+-- Force a square around floating windows
+if not vim.g.__lsp_float_border_patched then
+  vim.g.__lsp_float_border_patched = true
+  local orig_open = vim.lsp.util.open_floating_preview
+  function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+    opts = opts or {}
+    opts.border = opts.border or "single" -- "single"=square, or "double"/"rounded"/"solid"/"shadow"
+    return orig_open(contents, syntax, opts, ...)
+  end
+end
+
+-- Auto-reload externally modified files
 vim.o.autoread = true
 vim.api.nvim_create_augroup("checktime", { clear = true })
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
@@ -89,14 +100,3 @@ vim.api.nvim_create_autocmd({
     require("barbecue.ui").update()
   end,
 })
-
--- Force a square around floating windows
-if not vim.g.__lsp_float_border_patched then
-  vim.g.__lsp_float_border_patched = true
-  local orig_open = vim.lsp.util.open_floating_preview
-  function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-    opts = opts or {}
-    opts.border = opts.border or "single" -- "single"=square, or "double"/"rounded"/"solid"/"shadow"
-    return orig_open(contents, syntax, opts, ...)
-  end
-end
