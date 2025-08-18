@@ -241,6 +241,13 @@ Such as a minimal `nvim` config and `.bashrc` with `ls` aliases, etc.
 ## Todo
 
 - Redo `~/.local/bin/repeat` with `rich.progress` and various other improvements.
+- Redo `nvim` config.
+  Keep the `.git` for `nvchad` that's how updates are done!
+  Put all configuration in `.../lua/custom`.
+  Set up `.gitignore` correctly.
+- Redo `vim` config.
+  Either remove it entirely and only use `nvim`.
+  Or, only use `nvim` (based) but keep a very minimal, nice `vim` config around.
 - Migrate to new theming on desktop:
   - Move `waybar` mouse battery script to `hyprpanel`.
   - Remove `~/.config/waybar/`.

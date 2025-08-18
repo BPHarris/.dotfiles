@@ -71,21 +71,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- -- Alacritty: toggle padding on enter/exit nvim
--- if vim.env.TERM == "alacritty" or vim.env.TMUX ~= nil then
---   vim.api.nvim_create_autocmd({ "VimEnter", "FocusGained"}, {
---     callback = function()
---       os.execute "alacritty msg config window.padding.x=0 window.padding.y=0"
---     end,
---   })
---
---   vim.api.nvim_create_autocmd({ "VimLeave", "FocusLost" }, {
---     callback = function()
---       os.execute "alacritty msg config --reset"
---     end,
---   })
--- end
-
 -- Barbecue
 -- Default config from github
 require("barbecue").setup {
@@ -104,3 +89,14 @@ vim.api.nvim_create_autocmd({
     require("barbecue.ui").update()
   end,
 })
+
+-- Force a square around floating windows
+if not vim.g.__lsp_float_border_patched then
+  vim.g.__lsp_float_border_patched = true
+  local orig_open = vim.lsp.util.open_floating_preview
+  function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+    opts = opts or {}
+    opts.border = opts.border or "single" -- "single"=square, or "double"/"rounded"/"solid"/"shadow"
+    return orig_open(contents, syntax, opts, ...)
+  end
+end

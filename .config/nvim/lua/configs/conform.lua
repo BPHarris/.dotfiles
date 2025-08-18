@@ -9,6 +9,7 @@ local options = {
     zig = { "zigfmt" },
     sh = { "shellharden", "shfmt" },
     bssh = { "shellharden", "shfmt" },
+    toml = { "tombi" },
 
     ["*"] = {}, -- always
     ["_"] = { "trim_whitespace" }, -- only if not other formatters configured

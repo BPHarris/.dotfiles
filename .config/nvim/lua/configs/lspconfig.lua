@@ -5,6 +5,8 @@ local lspconfig = require "lspconfig"
 local servers = { "html", "cssls", "clangd", "gopls", "ruff", "basedpyright", "zls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
+vim.lsp.enable "tombi"
+
 -- lsps with default config
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
