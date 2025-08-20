@@ -145,9 +145,26 @@ pushd /tmp/tela-git
 ./install.sh -c green
 popd
 rm -rf /tmp/tela-git
+```
 
-# GTK does not respect ICON_THEME and settings.ini did not seem to work by itself
+**Additional:**
+
+Unfortunately, sometimes GTK simply does not respect `settings.ini` or `$GKT_THEME`.
+Therefore, we should set the `gsettings` variables correctly in case a program reads those:
+
+```bash
+gsettings set org.gnome.desktop.interface gtk-theme Orchis-Green-Dark-Compact
 gsettings set org.gnome.desktop.interface icon-theme Tela-green-dark
+```
+
+Also, some programs such as `ghostty` don't seem to read themes if they are in `~/.local/share/themes/` so we must copy our themes to `/usr/share/themes/`:
+
+```bash
+sudo cp -r ~/.local/share/themes/* /usr/share/themes/
+sudo chown -R root:root /usr/share/themes/
+
+sudo cp -r ~/.local/share/icons/* /usr/share/icons/
+sudo chown -R root:root /usr/share/icons/
 ```
 
 **Qt Theme:**
@@ -157,25 +174,31 @@ This is enabled by `QT_QPA_PLATFORMTHEME=gtk3` set in `~/.config/hypr/hyprland.c
 
 **Flatpak:**
 
-The easiest way is via [flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal).
-In the settings for `All Applications`, expose the folders:
+First we must expose `~/.themes/` and `~/.icons/` to flatpak apps:
 
-1. `~/.local/share/icons/`
-1. `~/.local/share/themes/`
+```bash
+ln -sf $HOME/.local/share/themes/ $HOME/.themes
+ln -sf $HOME/.local/share/icons/ $HOME/.icons
 
-Then set the environment variables:
+sudo flatpak override --filesystem=$HOME/.themes
+sudo flatpak override --filesystem=$HOME/.icons
 
-```sh
-QT_QPA_PLATFORMTHEME=gtk3
-ICON_THEME=Orchis-Green-Dark-Compact
-GTK_THEME=Tela-green-dark
+sudo flatpak override --env=GTK_THEME=Orchis-Green-Dark-Compact
+sudo flatpak override --env=ICON_THEME=Tela-icon-theme
 ```
+
+> [!CAUTION] Unfortunately, flatpak does not seem to respect `~/.local/share/{themes,icons}/` so we must use `~/.{themes,icons}`.
+
+Todo:
+Qt theme in flatpak.
 
 **Todo:**
 
-- Are Qt icons set correctly?
+- Icons seem wrong in native Qt.
+- Qt flatpak:
+  - QGtk3Style
+  - Icons
 - Helper script to check the theme automatically (there are a lot of places where variables need to be changed).
-  - Can Flatpak theming be automated?
 
 ### Emoji Picker
 

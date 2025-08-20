@@ -14,6 +14,12 @@
 !.local/bin/
 !.local/bin/**
 
+# Legacy themes/icons
+# User themes should be in `~/.local/share/{themes,icons}` but some apps (flatpaks)
+# don't respect this, so we must symlink `~/.themes/` and then ignore
+.themes
+.icons
+
 # Can't be moved to XDG base dirs
 # And I (probably) never want to track
 .cargo
