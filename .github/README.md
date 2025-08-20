@@ -77,6 +77,12 @@ This allows tab-completion when using the `config` git alias for managing this r
 
 ## Additional First-Time Setup
 
+### Login Configuration
+
+Todo:
+Document auto-login in user shell profile on TTY1.
+Fix keyring auto-unlock and document PAM settings.
+
 ### Enable user `systemd` units
 
 Below are some `systemd` units that can’t be enabled by merely existing in the repo; they must be enabled manually.
@@ -85,11 +91,6 @@ Below are some `systemd` units that can’t be enabled by merely existing in the
 systemctl --user daemon-reload
 
 systemctl --user enable --now clamav-scan.timer
-
-systemctl --user enable --now gnome-keyring.service
-
-# Auto-start Hyprland on TTY1
-systemctl --user enable --now hyprland.service
 
 # Auto-start applications with dependencies when Hyprland launches
 systemctl --user enable --now hyprland-session.target
