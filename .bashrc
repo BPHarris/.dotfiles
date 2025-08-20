@@ -1,6 +1,11 @@
 #!/bin/bash
 # shellcheck disable=SC1091
 
+# Fix systemd pager warning
+export SYSTEMD_PAGER=
+export SYSTEMD_PAGERSECURE=1
+export PAGER=less
+
 # Only apply to interactive shell
 [[ $- != *i* ]] && return
 

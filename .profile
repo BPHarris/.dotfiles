@@ -6,10 +6,14 @@
 
 export EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="alacritty"
+export TERMINAL="ghostty"
 export BROWSER="zen"
 export READER="zathura"
 export PAGER="less"
+
+# Fix systemd pager warning
+export SYSTEMD_PAGER=
+export SYSTEMD_PAGERSECURE=1
 
 #
 # Set TTY colours
@@ -22,12 +26,12 @@ export PAGER="less"
 #
 
 append_path() {
-    case ":$PATH:" in
-    *:"$1":*) ;;
-    *)
-        export PATH="${PATH:+$PATH:}$1"
-        ;;
-    esac
+	case ":$PATH:" in
+	*:"$1":*) ;;
+	*)
+		export PATH="${PATH:+$PATH:}$1"
+		;;
+	esac
 }
 
 #
@@ -50,10 +54,10 @@ append_path "/root/.local/bin"
 #
 
 if [ ! -d "$HOME/.local/desktop" ]; then
-    mkdir -p "$HOME/.local/desktop"
+	mkdir -p "$HOME/.local/desktop"
 fi
 if [ ! -d "$HOME/.local/publicshare" ]; then
-    mkdir -p "$HOME/.local/publicshare"
+	mkdir -p "$HOME/.local/publicshare"
 fi
 
 #
