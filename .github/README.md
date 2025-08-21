@@ -128,44 +128,33 @@ Or should I leave this to be handled by `gamemode`?
 
 ### Theming
 
-**GTK Theme:**
+**Install GTK Theme:**
 
 ```bash
 git clone https://github.com/vinceliuice/Orchis-theme.git /tmp/orchis-git
 pushd /tmp/orchis-git
-./install.sh --tweaks black --tweaks solid --tweaks compact --theme green --size compact --libadwaita
+./install.sh --tweaks black --tweaks solid --tweaks compact --theme green --color dark --size compact --libadwaita --dest $HOME/.local/share/themes --name Orchis-Black
 popd
 rm -rf /tmp/orchis-git
 ```
 
-**Icon Theme:**
+**Install icon theme:**
 
 ```bash
-git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/tela-git
-pushd /tmp/tela-git
-./install.sh -c green
-popd
-rm -rf /tmp/tela-git
+yay -S luv-icon-theme-git
 ```
+
+> [!CAUTION] Some icon themes will ruin GTK-4 app boot times (e.g. >1s for `ghostty`). Sometimes the manual install, repo, or AUR variant of a specific theme worked better (e.g. Tela from the AUR worked well but manually installed did not), sometimes it was always bad (e.g. Papirus).
 
 **Additional:**
 
-Unfortunately, sometimes GTK simply does not respect `settings.ini` or `$GKT_THEME`.
-Therefore, we should set the `gsettings` variables correctly in case a program reads those:
+When `gsettings` is installed it takes priority over `$GTK_THEME` and `settings.ini`.
+Therefore, we must set the `gsettings` variables correctly:
 
 ```bash
-gsettings set org.gnome.desktop.interface gtk-theme Orchis-Green-Dark-Compact
-gsettings set org.gnome.desktop.interface icon-theme Tela-green-dark
-```
-
-Also, some programs such as `ghostty` don't seem to read themes if they are in `~/.local/share/themes/` so we must copy our themes to `/usr/share/themes/`:
-
-```bash
-sudo cp -r ~/.local/share/themes/* /usr/share/themes/
-sudo chown -R root:root /usr/share/themes/
-
-sudo cp -r ~/.local/share/icons/* /usr/share/icons/
-sudo chown -R root:root /usr/share/icons/
+gsettings set org.gnome.desktop.interface gtk-theme $GTK_THEME
+gsettings set org.gnome.desktop.interface icon-theme $ICON_THEME
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 ```
 
 **Qt Theme:**
@@ -175,31 +164,34 @@ This is enabled by `QT_QPA_PLATFORMTHEME=gtk3` set in `~/.config/hypr/hyprland.c
 
 **Flatpak:**
 
-First we must expose `~/.themes/` and `~/.icons/` to flatpak apps:
+```bash
+mkdir $HOME/.icons $HOME/.themes
+sudo cp -r /path/to/themes/$GTK_THEME $HOME/.themes
+sudo cp -r /path/to/icons/$ICON_THEME $HOME/.icons
+```
+
+This will need to be adjusted depending on where the theming you are using are installed.
+
+Then we can expose these to flatpak:
 
 ```bash
-ln -sf $HOME/.local/share/themes/ $HOME/.themes
-ln -sf $HOME/.local/share/icons/ $HOME/.icons
-
 sudo flatpak override --filesystem=$HOME/.themes
 sudo flatpak override --filesystem=$HOME/.icons
 
-sudo flatpak override --env=GTK_THEME=Orchis-Green-Dark-Compact
-sudo flatpak override --env=ICON_THEME=Tela-icon-theme
+sudo flatpak override --env=GTK_THEME=$GTK_THEME
+sudo flatpak override --env=ICON_THEME=$ICON_THEME
 ```
 
-> [!CAUTION] Unfortunately, flatpak does not seem to respect `~/.local/share/{themes,icons}/` so we must use `~/.{themes,icons}`.
-
-Todo:
-Qt theme in flatpak.
+> [!NOTE] We must do things this way as flatpak apps will only read theming from `~/.{themes,icons}` and not `~/.local/share/{themes,icons}` or `/usr/share/{themes,icons}`. And they will not follow symlinks by the seems.
 
 **Todo:**
 
-- Icons seem wrong in native Qt.
+- Qt native:
+  - Icons
 - Qt flatpak:
   - QGtk3Style
   - Icons
-- Helper script to check the theme automatically (there are a lot of places where variables need to be changed).
+- Helper script to check the theme automatically (there are a lot of places where variables need to be changed)
 
 ### Emoji Picker
 

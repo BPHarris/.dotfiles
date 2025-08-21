@@ -14,9 +14,8 @@
 !.local/bin/
 !.local/bin/**
 
-# Legacy themes/icons
-# User themes should be in `~/.local/share/{themes,icons}` but some apps (flatpaks)
-# don't respect this, so we must symlink `~/.themes/` and then ignore
+# Flatpak themes/icons
+# User themes should be in `~/.local/share/{themes,icons}` but flatpak does not respect this.
 .themes
 .icons
 
