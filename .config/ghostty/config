@@ -1,15 +1,24 @@
 # --- Misc ---
+app-notifications = false
 confirm-close-surface = false
 link-url = true
-app-notifications = false
 
-# --- Colours ---
-# theme = light:0x96f,dark:0x96f
-background = #161616
-foreground = #f5f5f5
+# --- Theme ---
+# Pre-made them short-list
+# theme = "Dimidium"
+# theme = "flexoki-dark"
+# theme = "Framer"
 
-selection-background = #646464
+# --- Theme (Custom) ---
+# bold-is-bright = false
+
+background = #101010
+foreground = #e0e0e0
+
+selection-background = #323232
 selection-foreground = #e0e0e0
+
+cursor-color = #aeaeae
 
 # Normal colors (0–7)
 palette = 0=#080808
@@ -18,7 +27,7 @@ palette = 2=#54964f
 palette = 3=#d17536
 palette = 4=#1b4666
 palette = 5=#5e196d
-palette = 6=#5e8b8d
+palette = 6=#049191
 palette = 7=#646464
 
 # Bright colors (8–15)
@@ -28,13 +37,10 @@ palette = 10=#5c8b59
 palette = 11=#aa9c30
 palette = 12=#1267a5
 palette = 13=#8910ad
-palette = 14=#61c4c6
-palette = 15=#e0e0e0
+palette = 14=#01a8a8
+palette = 15=#f5f5f5
 
-# --- Misc. Theming ---
-cursor-style = block
-cursor-style-blink = true
-
+# --- Performance ---
 background-blur = false
 
 # --- Font ---
@@ -50,4 +56,3 @@ window-padding-x = 10
 window-padding-y = 2
 window-padding-balance = true
 window-padding-color = background
-
