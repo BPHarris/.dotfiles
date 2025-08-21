@@ -10,10 +10,10 @@ My dotfiles.
 
 ```bash
 # Minimal:
-sudo pacman -S --needed git ttf-firacode-nerd ttf-font-awesome terminus-font noto-fonts-emoji
+sudo pacman -S --needed git ttf-firacode-nerd ttf-font-awesome noto-fonts-emoji
 
 # Recommended:
-sudo pacman -S --needed git nerd-fonts ttf-font-awesome terminus-font noto-fonts-emoji
+sudo pacman -S --needed git nerd-fonts ttf-font-awesome noto-fonts-emoji
 ```
 
 **Desktop Environment:**
