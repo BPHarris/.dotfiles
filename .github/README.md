@@ -141,11 +141,23 @@ Or should I leave this to be handled by `gamemode`?
 **Install GTK Theme:**
 
 ```bash
-git clone https://github.com/vinceliuice/Orchis-theme.git /tmp/orchis-git
-pushd /tmp/orchis-git
+yay -S orchis-theme-git
+
+git clone https://github.com/vinceliuice/Orchis-theme.git /tmp/orchis-gtk-git/
+pushd /tmp/orchis-gtk-git
 ./install.sh --tweaks black --tweaks solid --tweaks compact --theme green --color dark --size compact --libadwaita --dest $HOME/.local/share/themes --name Orchis-Black
 popd
-rm -rf /tmp/orchis-git
+rm -rf /tmp/orchis-gtk-git
+```
+
+**Install Qt Theme:**
+
+```bash
+git clone https://github.com/vinceliuice/Orchis-kde.git /tmp/orchis-kde-git/
+pushd /tmp/orchis-kde-git
+./install.sh
+popd
+rm -rf /tmp/orchis-kde-git
 ```
 
 **Install icon theme:**
@@ -156,7 +168,7 @@ yay -S luv-icon-theme-git
 
 > [!CAUTION] Some icon themes will ruin GTK-4 app boot times (e.g. >1s for `ghostty`). Sometimes the manual install, repo, or AUR variant of a specific theme worked better (e.g. Tela from the AUR worked well but manually installed did not), sometimes it was always bad (e.g. Papirus).
 
-**Additional:**
+**Additional GTK setup:**
 
 When `gsettings` is installed it takes priority over `$GTK_THEME` and `settings.ini`.
 Therefore, we must set the `gsettings` variables correctly:
@@ -167,12 +179,16 @@ gsettings set org.gnome.desktop.interface icon-theme $ICON_THEME
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 ```
 
-**Qt Theme:**
+**Additional Qt setup:**
 
-This is handled via `QGtk3Style` (built into `qt5` and `qt6`), which tells Qt to follow the GTK theme.
-This is enabled by `QT_QPA_PLATFORMTHEME=gtk3` set in `~/.config/hypr/hyprland.conf`.
+```bash
+sudo pacman -S kvantum-qt5 kvantum
+yay -S qt5ct qt6ct
+```
 
-**Flatpak:**
+Set the theme and icons in `qt5ct`, `qt6ct`, and `kvantummanager`.
+
+**Additional Flatpak setup:**
 
 ```bash
 mkdir $HOME/.icons $HOME/.themes
@@ -185,11 +201,11 @@ This will need to be adjusted depending on where the theming you are using are i
 Then we can expose these to flatpak:
 
 ```bash
-sudo flatpak override --filesystem=$HOME/.themes
-sudo flatpak override --filesystem=$HOME/.icons
+flatpak override --user --filesystem="$HOME/.themes:ro"
+flatpak override --user --env=GTK_THEME="$GTK_THEME"
 
-sudo flatpak override --env=GTK_THEME=$GTK_THEME
-sudo flatpak override --env=ICON_THEME=$ICON_THEME
+flatpak override --user --filesystem="$HOME/.icons:ro"
+flatpak override --user --env=ICON_THEME="$ICON_THEME"
 ```
 
 > [!NOTE] We must do things this way as flatpak apps will only read theming from `~/.{themes,icons}` and not `~/.local/share/{themes,icons}` or `/usr/share/{themes,icons}`. And they will not follow symlinks by the seems.
@@ -197,8 +213,15 @@ sudo flatpak override --env=ICON_THEME=$ICON_THEME
 **Todo:**
 
 - Qt native:
-  - Icons
+  - Icons seem like they are not working but that might just be the programs I checked.
 - Qt flatpak:
+  - \\
+  ```
+  flatpak override --user --filesystem="$HOME/.local/share/Kvantum:ro"
+  flatpak override --user --filesystem="$HOME/.config/Kvantum:ro"
+  flatpak override --user --env=QT_STYLE_OVERRIDE="$QT_STYLE_OVERRIDE"
+  flatpak override --user --env=QT_QPA_PLATFORMTHEME="$QT_QPA_PLATFORMTHEME"
+  ```
   - QGtk3Style
   - Icons
 - Helper script to check the theme automatically (there are a lot of places where variables need to be changed)
