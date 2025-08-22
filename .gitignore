@@ -1,62 +1,47 @@
-.dotfiles/
+**
+
+!.gitignore
+!/.github/
+!/.github/**
+
+# Shell configs
+!/.profile
+!/.bashrc
+!/.bash_profile
+
+# Configs
+!/.config/
+!/.config/**
 
 # Sensitive dirs
-# Includes common software even if unused as a precaution
-.ssh/
-.config/keepassxc/
-.config/gh/
-.git-credentials
-.config/git/credentials
-.gnupg/
-
-# Non-config XDG dirs
-.cache/
-.local/*
-!.local/bin/
-!.local/bin/**
-
-# Flatpak themes/icons
-# User themes should be in `~/.local/share/{themes,icons}` but flatpak does not respect this.
-.themes/
-.icons/
-
-# Can't be moved to XDG base dirs and should not be tracked
-.cargo/
-.mozilla/
-.var/
-.zen/
-.hplip/
-
-# XDG user dirs
-# Custom
-downloads/
-documents/
-music/
-pictures/
-videos/
-# General
-Desktop/
-Downloads/
-Templates/
-Public/
-Documents/
-Music/
-Pictures/
-Videos/
+/.config/gh/
+/.config/keepassxc/
+/.config/git/credentials
 
 # Crud
-# This stuff seems like it just shouldn't be in `~/.config`
-.config/go/
-.config/Nextcloud/
-.config/pulse/
-.config/QtProject.conf
-.config/systemd/user/*.wants/
-.config/systemd/user/pipewire-session-manager.service
+/.config/autostart/
+/.config/cava/
+/.config/dconf/
+/.config/GIMP/
+/.config/go/telemetry/
+/.config/gtk-4.0/assets
+/.config/gtk-4.0/gtk-dark.css
+/.config/gtk-4.0/gtk.css
+/.config/Nextcloud/
+/.config/nvim/spell/
+/.config/pulse/
+/.config/QtProject/
+/.config/simple-scan/
+/.config/systemd/user/*.wants/
+/.config/systemd/user/pipewire*
+/.config/Thunar/
+/.config/xfce4/
+/.config/QtProject.conf
 
-# GTK 4 libadwita theming symlinks
-.config/gtk-4.0/assets/
-.config/gtk-4.0/gtk-dark.css
-.config/gtk-4.0/gtk.css
+/.config/Kvantum/*
+!/.config/Kvantum/kvantum.kvconfig
 
-# Stateful or transient data in `~/.config`
-.config/nvim/spell/
+# User scripts
+!/.local/
+!/.local/bin/
+!/.local/bin/**
