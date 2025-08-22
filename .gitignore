@@ -1,70 +1,62 @@
-.dotfiles
+.dotfiles/
 
-# Never track for privacy/security
-# Not fine:
-.ssh
-# I'm not sure:
-.config/keepassxc
-# Probably fine
-.config/gh
+# Sensitive dirs
+# Includes common software even if unused as a precaution
+.ssh/
+.config/keepassxc/
+.config/gh/
+.git-credentials
+.config/git/credentials
+.gnupg/
 
 # Non-config XDG dirs
-.cache
+.cache/
 .local/*
 !.local/bin/
 !.local/bin/**
 
 # Flatpak themes/icons
 # User themes should be in `~/.local/share/{themes,icons}` but flatpak does not respect this.
-.themes
-.icons
+.themes/
+.icons/
 
-# Can't be moved to XDG base dirs
-# And I (probably) never want to track
-.cargo
-.mozilla
-.var
-.zen
-
-# Can't be moved to XDG base dirs
-# But I might want to track at some point
-.hplip
+# Can't be moved to XDG base dirs and should not be tracked
+.cargo/
+.mozilla/
+.var/
+.zen/
+.hplip/
 
 # XDG user dirs
-# Mine
-downloads
-documents
-music
-pictures
-videos
+# Custom
+downloads/
+documents/
+music/
+pictures/
+videos/
 # General
-Desktop
-Downloads
-Templates
-Public
-Documents
-Music
-Pictures
-Videos
+Desktop/
+Downloads/
+Templates/
+Public/
+Documents/
+Music/
+Pictures/
+Videos/
 
 # Crud
-# This stuff seems like it just shouldn't be in .config etc
-.config/go
-.config/Nextcloud
-.config/pulse
+# This stuff seems like it just shouldn't be in `~/.config`
+.config/go/
+.config/Nextcloud/
+.config/pulse/
 .config/QtProject.conf
 .config/systemd/user/*.wants/
 .config/systemd/user/pipewire-session-manager.service
 
-# GTK 4 libadwita theming
-# These are symlinks for libadwita theming, don't commit them
-.config/gtk-4.0/assets
+# GTK 4 libadwita theming symlinks
+.config/gtk-4.0/assets/
 .config/gtk-4.0/gtk-dark.css
 .config/gtk-4.0/gtk.css
 
-# Explicitly ignore system specific profile in case it is accidentally committed
-.config/custom/profile
-
-# Ignore nvim spell files (at least for now)
-.config/nvim/spell
-
+# Stateful or transient data in `~/.config`
+.config/nvim/spell/
