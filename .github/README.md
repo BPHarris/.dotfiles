@@ -60,7 +60,8 @@ sudo pacman -S --needed eza lsd bat ripgrep duf dysk dust fd trash-cli sd gping 
 
 ```bash
 git clone --bare https://github.com/bpharris/.dotfiles $HOME/.dotfiles
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
+git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
+git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" config --local status.showUntrackedFiles no
 ```
 
 ### Optional
@@ -76,6 +77,15 @@ This allows tab-completion when using the `config` git alias for managing this r
 > [!CAUTION] Be sure to use `"$HOME"` in symbolic links!
 
 ## Additional First-Time Setup
+
+### XDG User Dirs
+
+I prefer `~/documents/` over `~/Documents/`, etc. and I don't like `desktop` and `publicshare` clogging up my home dir.
+The follow script automates updating the XDG user dirs on first-time setup:
+
+```bash
+source $HOME/.local/bin/set-xdg-user-dirs
+```
 
 ### Login Configuration
 

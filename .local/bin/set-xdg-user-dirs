@@ -1,0 +1,44 @@
+#!/bin/sh
+set -eu
+
+# update_user_xdg_dir NAME INITIAL CUSTOM
+# Move the XDG user dir $NAME from $INITIAL to $CUSTOM
+update_user_xdg_dir() {
+	name=$1
+
+	initial=$2
+	custom=$3
+
+	if [ ! -e "$initial" ]; then
+		return 0
+	fi
+
+	if [ "$initial" = "$custom" ]; then
+		return 0
+	fi
+
+	if command -v xdg-user-dirs-update >/dev/null 2>&1; then
+		xdg-user-dirs-update --set "$name" "$custom"
+	fi
+
+	parent=$(dirname "$custom")
+	if [ ! -d "$parent" ]; then
+		mkdir -p "$parent"
+	fi
+
+	if [ -e "$custom" ]; then
+		echo "error: $custom already exists, skipped" >&2
+		return 0
+	fi
+
+	mv "$initial" "$custom"
+}
+
+update_user_xdg_dir DESKTOP "$HOME/Desktop" "$HOME/.local/desktop"
+update_user_xdg_dir DOWNLOAD "$HOME/Downloads" "$HOME/downloads"
+update_user_xdg_dir TEMPLATES "$HOME/Templates" "$HOME/.config/templates"
+update_user_xdg_dir PUBLICSHARE "$HOME/Public" "$HOME/.local/publicshare"
+update_user_xdg_dir DOCUMENTS "$HOME/Documents" "$HOME/documents"
+update_user_xdg_dir MUSIC "$HOME/Music" "$HOME/music"
+update_user_xdg_dir PICTURES "$HOME/Pictures" "$HOME/pictures"
+update_user_xdg_dir VIDEOS "$HOME/Videos" "$HOME/videos"
