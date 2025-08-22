@@ -1,30 +1,17 @@
 #!/bin/sh
+# shellcheck disable=SC1091
 
-#
-# Exports
-#
+# prepend_path DIR
+prepend_path() {
+	case ":$PATH:" in
+	*:"$1":*) ;;
+	*)
+		export PATH="$1${PATH:+:$PATH}"
+		;;
+	esac
+}
 
-export EDITOR="nvim"
-export VISUAL="nvim"
-export TERMINAL="ghostty"
-export BROWSER="zen"
-export READER="zathura"
-export PAGER="less"
-
-# Fix systemd pager warning
-export SYSTEMD_PAGER=
-export SYSTEMD_PAGERSECURE=1
-
-#
-# Set TTY colours
-#
-
-. "$HOME"/.config/theme/colours/colours.sh
-
-#
-# Utils
-#
-
+# append_path DIR
 append_path() {
 	case ":$PATH:" in
 	*:"$1":*) ;;
@@ -34,34 +21,37 @@ append_path() {
 	esac
 }
 
-#
-# Add user executables to path
-#
+export EDITOR='nvim'
+export VISUAL='nvim'
+export TERMINAL='ghostty'
+export BROWSER='zen-browser'
+export READER='zathura'
+export PAGER='less'
 
-append_path "$HOME/.local/bin"
-append_path "$HOME/.local/bin/scripts"
-append_path "$HOME/.local/scripts"
+# Locale fallback
+: "${LANG:=en_GB.UTF-8}"
+export LANG
 
-# Doom Emacs
-append_path "$HOME/.config/emacs/bin"
+# Pagers used by many tools (git, man, etc.)
+export LESS='-R'
+export MANPAGER='less -R'
 
-# Root bin
-# Used by pipx etc
-append_path "/root/.local/bin"
+# Fix systemd pager warning
+export SYSTEMD_PAGER=
+export SYSTEMD_PAGERSECURE=1
 
-#
-# XDG user dirs
-#
+# Ensure 24-bit colour when available
+export COLORTERM='truecolor'
 
-if [ ! -d "$HOME/.local/desktop" ]; then
-	mkdir -p "$HOME/.local/desktop"
-fi
-if [ ! -d "$HOME/.local/publicshare" ]; then
-	mkdir -p "$HOME/.local/publicshare"
-fi
+# User executables
+prepend_path "$HOME/.local/bin"
 
-#
+# Prevent pipx from hijacking `.local/bin`
+export PIPX_BIN_DIR="$HOME/.local/pipx/bin"
+export PIPX_HOME="$HOME/.local/pipx/venvs"
+append_path "$HOME/.local/pipx/bin"
+
 # XDG base dirs
-#
-
-xdg-base-dirs
+if [ -r "$HOME/.local/bin/xdg-base-dirs" ] && [ -f "$HOME/.local/bin/xdg-base-dirs" ]; then
+	. "$HOME/.local/bin/xdg-base-dirs" || echo "xdg-base-dirs: non-zero exit" >&2
+fi

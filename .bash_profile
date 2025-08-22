@@ -1,12 +1,11 @@
 #!/bin/bash
+# shellcheck disable=SC1091
 
-[[ -f "$HOME"/.profile ]] && . "$HOME"/.profile
-[[ -f "$HOME"/.bashrc ]] && . "$HOME"/.bashrc
+[[ -f "$HOME/.profile" ]] && . "$HOME/.profile"
+[[ -f "$HOME/.bashrc" ]] && . "$HOME/.bashrc"
 
-# Created by `pipx`
-export PATH="$PATH:/home/anon/.local/pipx/bin"
-
-# Autostart Hyprland
-if [ "$DISPLAY" = "" ] && [ "$WAYLAND_DISPLAY" = "" ] && [ "$XDG_VTNR" -eq 1 ]; then
+# Auto-start Hyprland
+if [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" && "${XDG_VTNR:-0}" -eq 1 ]] &&
+	command -v Hyprland >/dev/null 2>&1; then
 	exec Hyprland
 fi

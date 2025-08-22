@@ -1,103 +1,137 @@
 #!/bin/sh
-# See:    https://wiki.archlinux.org/title/XDG_Base_Directory
+# See: https://wiki.archlinux.org/title/XDG_Base_Directory
+# shellcheck disable=SC1091
+
+# create DIR
+create_dir() {
+	[ -d "$1" ] || mkdir -p "$1"
+}
+
+# create_and_log $DIR
+create_dir_and_log() {
+	[ -d "$1" ] || {
+		mkdir -p "$1" && echo "Created $1"
+	}
+}
+
+# append_path DIR
+append_path() {
+	case ":$PATH:" in
+	*:"$1":*) ;;
+	*)
+		export PATH="${PATH:+$PATH:}$1"
+		;;
+	esac
+}
 
 # Configure XDG base directories
-export XDG_CONFIG_HOME="$HOME"/.config
-export XDG_CACHE_HOME="$HOME"/.cache
-export XDG_DATA_HOME="$HOME"/.local/share
-export XDG_STATE_HOME="$HOME"/.local/state
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Ensure we have a runtime dir (TTY/SSH without systemd may lack it)
+if [ "${XDG_RUNTIME_DIR:-}" = "" ]; then
+	if [ -d "/run/user/$(id -u)" ]; then
+		XDG_RUNTIME_DIR="/run/user/$(id -u)"
+		export XDG_RUNTIME_DIR
+	else
+		XDG_RUNTIME_DIR="$XDG_CACHE_HOME/_runtime"
+		export XDG_RUNTIME_DIR
+		mkdir -p "$XDG_RUNTIME_DIR"
+	fi
+fi
 
 # Load XDG user directories, when not root
 if [ "$(id -u)" -ne 0 ] && [ -r "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
-	# shellcheck source=/dev/null
 	. "$XDG_CONFIG_HOME/user-dirs.dirs"
 fi
 
-#
-# Create
-#
-create() { [ -d "$1" ] || (mkdir -p "$1" && echo "Created $1"); }
-create_silent() { [ -d "$1" ] || mkdir -p "$1"; }
-
-create "$XDG_CONFIG_HOME"
-create "$XDG_CACHE_HOME"
-create "$XDG_DATA_HOME"
-create "$XDG_STATE_HOME"
-
-#
-# Program specific configuration
-#
+# Initial base dirs
+create_dir_and_log "$XDG_CONFIG_HOME"
+create_dir_and_log "$XDG_CACHE_HOME"
+create_dir_and_log "$XDG_DATA_HOME"
+create_dir_and_log "$XDG_STATE_HOME"
 
 # Bash
-create "$XDG_STATE_HOME"/bash
-export HISTFILE="$XDG_STATE_HOME"/bash/history
+create_dir_and_log "$XDG_STATE_HOME/bash"
+export HISTFILE="$XDG_STATE_HOME/bash/history"
 
 # Bash completion
-create "$XDG_CONFIG_HOME"/bash-completion
-export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion
+create_dir_and_log "$XDG_CONFIG_HOME/bash-completion"
+export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME/bash-completion/bash_completion"
 
 # Less
-create "$XDG_CONFIG_HOME"/less
-export LESSKEY="$XDG_CONFIG_HOME"/less/lesskey
-export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
+create_dir_and_log "$XDG_CONFIG_HOME/less"
+export LESSKEY="$XDG_CONFIG_HOME/less/lesskey"
+export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 
 # Wget
-touch "$XDG_CONFIG_HOME"/wgetrc
-touch "$XDG_CACHE_HOME"/wget-hsts
-export WGETRC="$XDG_CONFIG_HOME"/wgetrc
-alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
+touch "$XDG_CONFIG_HOME/wgetrc"
+touch "$XDG_CACHE_HOME/wget-hsts"
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+grep -q '^hsts-file *= ' "$WGETRC" || printf 'hsts-file = %s/wget-hsts\n' "$XDG_CACHE_HOME" >>"$WGETRC"
 
 # GnuPG
-create "$XDG_DATA_HOME"/gnupg
-export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-alias gpg2='gpg2 --homedir "$GNUPGHOME"'
+# Note: don't remove `|| ...`, it prevents exit on chmod failure
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+if [ ! -d "$GNUPGHOME" ]; then
+	mkdir -p "$(dirname "$GNUPGHOME")"
+	mkdir -m 700 "$GNUPGHOME"
+fi
+chmod 700 "$GNUPGHOME" 2>/dev/null || echo "Warning: couldn't set 700 on $GNUPGHOME"
 
 # Python REPL
-create "$XDG_STATE_HOME"/python
-export PYTHON_HISTORY="$XDG_STATE_HOME"/python/.python_history
+create_dir_and_log "$XDG_STATE_HOME/python"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python/.python_history"
 touch "$PYTHON_HISTORY"
 
-create "$XDG_CACHE_HOME"/python
-export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME"/python
+create_dir_and_log "$XDG_CACHE_HOME/python"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
 
-create "$XDG_DATA_HOME"/python
-export PYTHONUSERBASE="$XDG_DATA_HOME"/python
+create_dir_and_log "$XDG_DATA_HOME/python"
+export PYTHONUSERBASE="$XDG_DATA_HOME/python"
 
 # Go
-create "$XDG_DATA_HOME"/go
-export GOPATH="$XDG_DATA_HOME"/go
+create_dir_and_log "$XDG_DATA_HOME/go"
+export GOPATH="$XDG_DATA_HOME/go"
+append_path "$GOPATH/bin"
 
 # Rust#Cargo
-create "$XDG_DATA_HOME"/cargo
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
+create_dir_and_log "$XDG_DATA_HOME/cargo"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+append_path "$CARGO_HOME/bin"
 
 # Rust#Rustup
-create "$XDG_DATA_HOME"/rustup
-export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+create_dir_and_log "$XDG_DATA_HOME/rustup"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 # Node Package Manager
-create "$XDG_CONFIG_HOME"/npm/config
-create "$XDG_CACHE_HOME"/npm
-create_silent "$XDG_RUNTIME_DIR"/npm
-create "$XDG_DATA_HOME"/npm
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+create_dir_and_log "$XDG_CONFIG_HOME/npm/config"
+create_dir_and_log "$XDG_CACHE_HOME/npm"
+create_dir "$XDG_RUNTIME_DIR/npm"
+create_dir_and_log "$XDG_DATA_HOME/npm"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
-if ! test -f "$XDG_CONFIG_HOME"/npm/npmrc; then
-	touch "$XDG_CONFIG_HOME"/npm/npmrc
+if ! test -f "$XDG_CONFIG_HOME/npm/npmrc"; then
+	touch "$XDG_CONFIG_HOME/npm/npmrc"
 	{
 		echo "prefix=${XDG_DATA_HOME}/npm"
 		echo "cache=${XDG_CACHE_HOME}/npm"
 		echo "tmp=${XDG_RUNTIME_DIR}/npm"
 	} >>"$XDG_CONFIG_HOME"/npm/npmrc
-	echo "init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js" >>"$XDG_CONFIG_HOME"/npm/npmrc
+	echo "init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js" >>"$XDG_CONFIG_HOME/npm/npmrc"
 fi
 
-# Emacs
-create "$XDG_CONFIG_HOME"/emacs
+append_path "$XDG_DATA_HOME/npm/bin"
 
-# Yarn
-alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+# Emacs
+create_dir_and_log "$XDG_CONFIG_HOME/emacs"
 
 # GNU Parallel
-create "$XDG_CONFIG_HOME"/parallel
-export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+create_dir_and_log "$XDG_CONFIG_HOME/parallel"
+export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
+
+# calc
+create_dir_and_log "$XDG_CACHE_HOME/calc"
+export CALCHISTFILE="$XDG_CACHE_HOME/calc/history"
