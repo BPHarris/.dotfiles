@@ -2,7 +2,6 @@
 -- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 
 ---@type ChadrcConfig
-
 local M = {}
 
 M.base46 = {
@@ -14,6 +13,8 @@ M.base46 = {
     TelescopeSelection = { bg = "grey", fg = "white" },
     QuickFixLine = { bg = "black" },
     Operator = { fg = "red" },
+    Comment = { italic = true },
+    ["@Comment"] = { italic = true },
   },
 }
 

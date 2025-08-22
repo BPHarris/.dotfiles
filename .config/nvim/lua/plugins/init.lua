@@ -34,6 +34,19 @@ return {
     },
   },
 
+  { import = "nvchad.blink.lazyspec" },
+
+  -- editor ruler
+  -- a bit nicer that color_column
+  {
+    "lukas-reineke/virt-column.nvim",
+    event = "VeryLazy",
+    opts = {
+      virtcolumn = "88,100,120",
+      char = "│",
+    },
+  },
+
   -- breadcrumbs
   {
     "utilyre/barbecue.nvim",
@@ -74,6 +87,4 @@ return {
       },
     },
   },
-
-  { import = "nvchad.blink.lazyspec" },
 }
