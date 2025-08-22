@@ -2,5 +2,6 @@ ACTION=="change", SUBSYSTEM=="power_supply", \
 	ATTR{online}=="0", \
 	ATTR{type}=="Mains", \
 	RUN+="/usr/bin/powerprofilesctl set power-saver", \
-	RUN+="/usr/bin/brightnessctl set 50%" \
-	RUN+="/bin/sh -c '[ -x /usr/bin/bluetoothctl ] && { /usr/bin/bluetoothctl devices Connected 2>/dev/null | /usr/bin/grep -q ^Device || /usr/bin/bluetoothctl power off; }'"
+	RUN+="/usr/bin/brightnessctl set 40%", \
+	RUN+="/bin/sh -c '[ -x /usr/bin/bluetoothctl ] && { /usr/bin/bluetoothctl devices Connected 2>/dev/null | /usr/bin/grep -q ^Device || /usr/bin/bluetoothctl power off; }'", \
+	RUN+="/bin/sh -c 'for c in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do echo powersave > $c; done'"

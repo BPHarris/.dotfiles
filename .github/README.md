@@ -112,9 +112,9 @@ These are optional, and I only use them on my laptop.
 These rules include:
 
 - On switching to battery:
-  set power profile to battery saving, set brightness to 50%, and disable Bluetooth if no devices are connected;
+  set power profile to battery saving, set brightness to 50%, and disable Bluetooth if no devices are connected, set CPU governor to powersave;
 - On switching to mains:
-  set power profile to performance, set brightness to 100%.
+  set power profile to performance, set brightness to 100%, set CPU governor to performance.
 
 These can be symlinked manually or by running the helper script:
 
