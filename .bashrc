@@ -80,13 +80,13 @@ export PS4="\[\033[1;34m\]+\[\033[0m\] "
 
 # Man colouring
 man() {
-	LESS=-R \
+	LESS='--use-color -DSwGd -DP--' \
 		GROFF_NO_SGR=1 \
-		LESS_TERMCAP_md=$'\e[1;34m' \
+		LESS_TERMCAP_md=$'\e[1;90m' \
 		LESS_TERMCAP_me=$'\e[0m' \
-		LESS_TERMCAP_us=$'\e[0;32m' \
+		LESS_TERMCAP_us=$'\e[3;31m' \
 		LESS_TERMCAP_ue=$'\e[0m' \
-		LESS_TERMCAP_so=$'\e[1;33m' \
+		LESS_TERMCAP_so=$'\e[1;4;32m' \
 		LESS_TERMCAP_se=$'\e[0m' \
 		command man "$@"
 }
