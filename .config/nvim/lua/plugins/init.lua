@@ -87,4 +87,17 @@ return {
       },
     },
   },
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = function(_, opts)
+      opts.actions = opts.actions or {}
+      opts.actions.file_popup = vim.tbl_deep_extend("force", opts.actions.file_popup or {}, {
+        -- Use a square border on file info hover
+        open_win_config = {
+          border = "single",
+        },
+      })
+    end,
+  },
 }
