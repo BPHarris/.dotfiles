@@ -114,6 +114,15 @@ systemctl --user enable --now nextcloud.service
 systemctl --user list-timers --all
 ```
 
+### Enable non-user `systemd` units
+
+This should just be the NAS connection which does not work as a user unit.
+
+```bash
+cp ~/.config/systemd/system/mnt-nas.mount /etc/systemd/system/
+sudo systemctl enable --now mnt-nas.mount
+```
+
 ### Set `udev` Rules
 
 There are some `udev` rules in `.config/udev/rules.d/*.rules` which must be symlinked to `/etc/udev/rules.d/*.rules` to take effect.
