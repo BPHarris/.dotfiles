@@ -22,7 +22,7 @@ sudo pacman -S --needed git nerd-fonts ttf-font-awesome noto-fonts-emoji
 sudo pacman -S --needed hyprland hypridle hyprpaper hyprlock xdg-desktop-portal-hyprland polkit-kde-agent wpctl playerctl brightnessctl bluez blueman networkmanager
 yay -S --needed ags-hyprpanel-git
 
-sudo pacman -S --needed alacritty ghostty keepassxc nextcloud-client htop btop tmux
+sudo pacman -S --needed alacritty ghostty foot wezterm keepassxc nextcloud-client htop btop tmux smbclient cifs-utils thunar lf nnn img2sixel
 ```
 
 **Screenshots:**
