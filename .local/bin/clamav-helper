@@ -1,0 +1,439 @@
+#!/bin/env python
+from __future__ import annotations
+
+import argparse
+import os
+import shlex
+import shutil
+import subprocess
+import time
+from pathlib import Path
+from typing import TYPE_CHECKING, Protocol, cast
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
+    from typing import IO, Final, Literal
+
+
+HOME: Final = Path(os.getenv("HOME", "/home/anon/"))
+FALLBACK_STATE_HOME: Final = HOME / ".local" / "state"
+USER_STATE_HOME: Final = Path(os.environ.get("XDG_STATE_HOME", FALLBACK_STATE_HOME))
+STATE_DIR: Final = USER_STATE_HOME / "clamav"
+
+
+def create_cli_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="clamav-helper",
+        description=(
+            "A convenient command-line interface for running ClamAV scans.\n"
+            "\n"
+            "Returns 1 if clam is not available.\n"
+            "Returns 2 if clamd is not running.\n"
+            "Returns 3 if clam exited with an error.\n"
+            "\n"
+            "Returns -1 if an internal error occurs."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    command_subparser = parser.add_subparsers(dest="command", required=True)
+
+    # clamav-helper quick
+    quick_parser = command_subparser.add_parser(
+        "quick",
+        help="run a 'quick' clam scan on the targets (defaults to $HOME if omitted).",
+        description=(
+            "Perform a simple clam scan on the given directories or files. "
+            "If no targets are given, your home directory will be scanned by default.\n"
+            "\n"
+            "Warning: if --exclude-dir arguments are given then the scan must be run "
+            "in single-processed mode (clamscan not clamdscan) which may be slower "
+            "that not excluding the dirs! This is a limitation of clam."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    _ = quick_parser.add_argument(
+        "-x",
+        "--exclude-dir",
+        metavar="DIR",
+        default=[],
+        dest="exclude_dirs",
+        action="append",
+        help="exclude a directories from the scan (this may be used multiple times).",
+    )
+    _ = quick_parser.add_argument(
+        "targets",
+        nargs="*",
+        default=[str(HOME)],
+        metavar="TARGET",
+        help="files/directories to scan (defaults to $HOME if omitted).",
+    )
+    quick_parser.set_defaults(func=quick)
+
+    # clamav-helper full
+    full_parser = command_subparser.add_parser(
+        "full",
+        help="run a 'full' clam scan on the system root.",
+        description=(
+            "Carry out a multi-process clamdscan starting at the system root ('/').\n"
+            "It is recommended that you configure sensible exclusions in "
+            "/etc/clamav/clamd.conf to avoid scanning temporary or virtual "
+            "filesystems."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    full_parser.set_defaults(func=full)
+
+    # clamav-helper flatpak
+    flatpak_parser = command_subparser.add_parser(
+        "flatpak",
+        help="scan the system’s Flatpak installation directories.",
+        description=(
+            "Inspect common read-only Flatpak directories.\n"
+            "As the flatpak directories are read-only, except by flatpak, this is only "
+            "useful after a 'flatpak update'."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    flatpak_parser.set_defaults(func=flatpak)
+
+    # clamav-helper show
+    show_parser = command_subparser.add_parser(
+        "show",
+        help="show useful information.",
+        description="Show useful information.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    show_subparsers = show_parser.add_subparsers(dest="what", required=True)
+    show_parser.set_defaults(func=show)
+
+    _ = show_subparsers.add_parser(
+        "recommended-quick-excludes",
+        help="Display suggested --exclude-dir options for quick scans.",
+        description=(
+            "Print a list of directories that are usually safe to exclude from quick "
+            "scans, improving performance without materially affecting coverage "
+            "provided your $HOME directory is small."
+        ),
+    )
+    _ = show_subparsers.add_parser(
+        "recommended-clamd-excludes",
+        help="Display suggested exclusions for clamd.conf.",
+        description=(
+            "Print a set of recommended ExcludePath entries for use in "
+            "/etc/clamav/clamd.conf, helping to avoid unnecessary scanning of "
+            "system, temporary, or virtual directories."
+        ),
+    )
+
+    return parser
+
+
+class QuickCliArgs(Protocol):
+    command: Literal["quick"]
+    exclude_dirs: list[str]
+    targets: list[str]
+
+
+class FullCliArgs(Protocol):
+    command: Literal["full"]
+
+
+class FlatpakCliArgs(Protocol):
+    command: Literal["flatpak"]
+
+
+class ShowCliArgs(Protocol):
+    command: Literal["show"]
+    what: Literal["recommended-quick-excludes", "recommended-clamd-excludes"]
+
+
+CliArguments = QuickCliArgs | FullCliArgs | FlatpakCliArgs | ShowCliArgs
+
+
+def find_clamscan() -> str:
+    clamscan = shutil.which("/usr/bin/clamscan")
+
+    if clamscan is None:
+        exit(1)
+
+    return clamscan
+
+
+def find_clamdscan() -> str:
+    clamdscan = shutil.which("/usr/bin/clamdscan")
+
+    if clamdscan is None:
+        exit(1)
+
+    daemon_is_running = (
+        subprocess.run(
+            ["/usr/bin/systemctl", "is-active", "clamav-daemon.service"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        == 0
+    )
+    if not daemon_is_running:
+        print(
+            "clamav-daemon.service is not running "
+            + "(start with: sudo systemctl enable --now clamav-daemon.service)"
+        )
+        exit(2)
+
+    return clamdscan
+
+
+def is_clamscan_error_code(statuscode: int) -> bool:
+    # See: man clamscan
+    return statuscode == 2
+
+
+def run_clam_scan(
+    cmd: Sequence[str],
+    *,
+    stderr: IO[str],
+) -> tuple[subprocess.CompletedProcess[str], float]:
+    # TODO
+    # Does it make sense to have nice/ionice come from env?
+    t0 = time.perf_counter()
+    result = subprocess.run(
+        ["ionice", "-c3", "nice", "-n", "19", *cmd],
+        stderr=stderr,
+        text=True,
+    )
+    t1 = time.perf_counter()
+    return result, t1 - t0
+
+
+def count_infections(f: Path, /) -> int:
+    if not f.is_file() or f.stat().st_size == 0:
+        return 0
+    try:
+        with f.open("r", encoding="utf-8", errors="ignore") as fp:
+            return sum(1 for line in fp if line.rstrip("\r\n").endswith("FOUND"))
+    except OSError:
+        return 0
+
+
+def human_readable_time(time_in_seconds: float) -> str:
+    result = ""
+    time = time_in_seconds
+
+    one_second = 1
+    one_minute = one_second * 60
+    one_hour = one_minute * 60
+
+    if time < one_second:
+        return f"<1s ({time_in_seconds:.2f}s)"
+
+    if time > one_hour:
+        hours, time = divmod(time, one_hour)
+        result += f"{hours}h"
+
+    if time > one_minute:
+        minutes, time = divmod(time, one_minute)
+        result += f"{minutes}m"
+
+    if time > one_second:
+        seconds, time = divmod(time, one_second)
+        result += f"{seconds}s"
+
+    result += f"{time}s"
+    return f"{result} ({time_in_seconds:.2f}s)"
+
+
+def spawn_notification(
+    *,
+    infected_count: int,
+    elapsed_seconds: float,
+    log_file: Path,
+) -> None:
+    libnotify = shutil.which("/usr/bin/notify-send")
+
+    if libnotify is None:
+        return
+
+    time = human_readable_time(elapsed_seconds)
+
+    if infected_count > 0:
+        args = [
+            "--urgency=critical",
+            "--icon=dialog-warning",
+            "ClamAV",
+            f"{infected_count} infections found in {time}.\n"
+            + f"Check {shlex.quote(str(log_file))}.",
+        ]
+    else:
+        args = [
+            "--urgency=low",
+            "--icon=dialog-information",
+            "ClamAV",
+            f"No infections found in {time}.",
+        ]
+
+    subprocess.run(
+        [libnotify, *args],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )  # pyright: ignore[reportUnusedCallResult]
+
+
+def get_log_and_warn_files(cmd: str) -> tuple[Path, Path]:
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+
+    log_file = STATE_DIR / f"clamav-scan-{cmd}.log"
+    warn_file = log_file.with_suffix(".log.warn")
+
+    # If the log file exists and contains found signatures we would read these as false
+    # positives so we must remove this.
+    if log_file.is_file():
+        log_file.unlink()
+
+    return log_file, warn_file
+
+
+def quick(arguments: QuickCliArgs) -> int:
+    log_file, warn_file = get_log_and_warn_files(arguments.command)
+
+    # Clam does not allow exclude dirs for clamdscan.
+    # So when exclusions are given we run a normal (single-processed) clamscan.
+    if arguments.exclude_dirs:
+        clam = find_clamscan()
+        special_args = (
+            "--recursive=yes",
+            "--cross-fs=no",
+            *(f"--exclude-dir={shlex.quote(x)}" for x in arguments.exclude_dirs),
+        )
+    else:
+        clam = find_clamdscan()
+        special_args = ("--multiscan", "--fdpass")
+
+    args = (
+        "--infected",
+        "--quiet",
+        "--stdout",
+        f"--log={log_file!s}",
+        *special_args,
+        *(shlex.quote(t) for t in arguments.targets),
+    )
+    with warn_file.open("w") as fp:
+        info, elapsed_seconds = run_clam_scan((clam, *args), stderr=fp)
+
+    if is_clamscan_error_code(info.returncode):
+        print("error running clam")
+        return 3
+
+    infected_count = count_infections(log_file)
+    spawn_notification(
+        infected_count=infected_count,
+        elapsed_seconds=elapsed_seconds,
+        log_file=log_file,
+    )
+
+    return 0
+
+
+def full(arguments: FullCliArgs) -> int:
+    log_file, warn_file = get_log_and_warn_files(arguments.command)
+
+    clamd = find_clamdscan()
+
+    subprocess.run(
+        [clamd, "--reload"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )  # pyright: ignore[reportUnusedCallResult]
+
+    args = (
+        "--infected",
+        "--multiscan",
+        "--fdpass",
+        "--quiet",
+        "--stdout",
+        f"--log={log_file!s}",
+        "/",
+    )
+    with warn_file.open("w") as fp:
+        _, elapsed_seconds = run_clam_scan((clamd, *args), stderr=fp)
+
+    infected_count = count_infections(log_file)
+    spawn_notification(
+        infected_count=infected_count,
+        elapsed_seconds=elapsed_seconds,
+        log_file=log_file,
+    )
+
+    return 0
+
+
+def flatpak(arguments: FlatpakCliArgs) -> int:
+    log_file, warn_file = get_log_and_warn_files(arguments.command)
+
+    user_flatpak_dir = HOME / ".local" / "share" / "flatpak"
+    system_flatpak_dir = Path("/var/lib/flatpak")
+
+    # NOTE
+    # This can't be clamd as the user may have excluded the system flatpak dir as
+    # recommended.
+    clams = find_clamscan()
+    args = (
+        "--infected",
+        "--recursive=yes",
+        "--cross-fs=no",
+        "--quiet",
+        "--stdout",
+        f"--log={log_file!s}",
+        str(user_flatpak_dir),
+        str(system_flatpak_dir),
+    )
+
+    with warn_file.open("w") as fp:
+        _, elapsed_seconds = run_clam_scan((clams, *args), stderr=fp)
+
+    infected_count = count_infections(log_file)
+    spawn_notification(
+        infected_count=infected_count,
+        elapsed_seconds=elapsed_seconds,
+        log_file=log_file,
+    )
+
+    return 0
+
+
+def show(arguments: ShowCliArgs) -> int:
+    if arguments.what == "recommended-quick-excludes":
+        print('--exclude-dir "^$HOME/.cache($|/)"')
+        print('--exclude-dir "^$HOME/.local/share/rustup($|/)"')
+        print('--exclude-dir "^$HOME/.local/share/rustup($|/)"')
+
+    if arguments.what == "recommended-clamd-excludes":
+        print("# Ephemeral system files")
+        print("ExcludePath ^/proc($|/)")
+        print("ExcludePath ^/sys($|/)")
+        print("ExcludePath ^/dev($|/)")
+        print("ExcludePath ^/run($|/)")
+        print("ExcludePath ^/var/run($|/)")
+        print("# Read-only dir handled by flatpak")
+        print("# You can check this with `clamav-helper flatpak` after updates")
+        print("ExcludePath ^/var/lib/flatpak($|/)")
+        print("# Do not scan mounted drives")
+        print("ExcludePath ^/mnt($|/)")
+
+    return 0
+
+
+def main() -> int:
+    arguments = create_cli_parser().parse_args()
+    arguments = cast(CliArguments, cast(object, arguments))
+
+    action: Callable[[CliArguments], int] | None = getattr(arguments, "func", None)
+
+    if action is None:
+        print(f"unrecognised command: {arguments.command}")
+        return -1
+
+    return action(arguments)
+
+
+if __name__ == "__main__":
+    exit(main())

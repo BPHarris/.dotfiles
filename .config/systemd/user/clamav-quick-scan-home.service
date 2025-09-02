@@ -1,0 +1,8 @@
+[Unit]
+Description=ClamAV quick scan of $HOME
+ConditionPathIsExecutable=%h/.local/bin/clamav-helper
+
+[Service]
+Type=oneshot
+ConditionACPower=true
+ExecStart=%h/.local/bin/clamav-helper quick %h
