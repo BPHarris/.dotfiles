@@ -1,0 +1,217 @@
+#!/bin/env python3
+# TODO
+# Rethink this whole thing, there has to be a neater interface.
+#
+# JXL a whole dir (jpg, jpeg, png, warn on unrecognised)
+#   jxl-helper src_dir out_dir
+#
+# JXL a while dir in-place
+#   jxl-helper --in-place src out
+#   This is destructive (y/N)
+#
+# JXL lossy
+#   jxl-helper -d I src out
+#
+# Switches:
+#   --allow-no-jpeg-reconstruction (set --allow_jpeg_reconstruction=0)
+#   -e I  (default 9)
+#   --dry-run
+from __future__ import annotations
+
+import argparse
+import os
+import subprocess
+from concurrent.futures.thread import ThreadPoolExecutor
+from dataclasses import dataclass
+from enum import Enum
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+from rich import progress
+
+if TYPE_CHECKING:
+    from typing import NoReturn
+
+
+def die(reason: str, code: int = 1) -> NoReturn:
+    print(reason)
+    exit(code)
+
+
+class FileTypes(str, Enum):
+    jpg = "jpg"
+    png = "png"
+
+
+@dataclass(slots=True)
+class CliArguments(argparse.Namespace):
+    type: FileTypes = FileTypes.jpg
+
+    lossless: bool = True
+
+    distance: int = 0
+    effort: int = 9
+
+    remove: bool = False
+    dry_run: bool = False
+
+    target: Path = Path(".")
+
+
+def create_cli_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Simple JXL compression helper.")
+
+    _ = parser.add_argument(
+        "-t",
+        "--type",
+        default=FileTypes.jpg,
+        type=FileTypes,
+        choices=tuple(ft.name for ft in FileTypes),
+        required=False,
+        help="The file type to target.",
+        metavar="TYPE",
+        dest="type",
+    )
+
+    _ = parser.add_argument(
+        "--lossy",
+        action="store_false",
+        help="If given allow for lossy compression.",
+        dest="lossless",
+    )
+
+    _ = parser.add_argument(
+        "-d",
+        "--distance",
+        default=0,
+        type=int,
+        choices=tuple(range(0, 10)),
+        required=False,
+        help="The compression distance passed through to cjxl.",
+        dest="distance",
+    )
+    _ = parser.add_argument(
+        "-e",
+        "--effort",
+        default=9,
+        type=int,
+        choices=tuple(range(0, 10)),
+        required=False,
+        help="The compression effort passed through to cjxl.",
+        dest="effort",
+    )
+
+    _ = parser.add_argument(
+        "--remove",
+        action="store_true",
+        help="If given remove the input files.",
+        dest="remove",
+    )
+
+    _ = parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="If given do not act, only print what would have been done.",
+        dest="dry_run",
+    )
+
+    _ = parser.add_argument(
+        "target",
+        type=Path,
+        help="The target dir.",
+        metavar="DIR",
+    )
+
+    return parser
+
+
+def make_cjxl_command(arguments: CliArguments, file: Path) -> list[str]:
+    command: list[str] = ["cjxl"]
+
+    if not arguments.lossless and arguments.type == FileTypes.jpg:
+        command.append("--lossless_jpeg=0")
+
+    command += ["-d", str(arguments.distance)]
+    command += ["-e", str(arguments.effort)]
+    command += [str(file), str(file.with_suffix(".jxl"))]
+
+    return command
+
+
+def main(arguments: CliArguments) -> int:
+    target = arguments.target.resolve().expanduser()
+
+    if not target.is_dir():
+        die(f"{arguments.target} is not a dir")
+
+    if (
+        arguments.lossless
+        and arguments.type == FileTypes.jpg
+        and arguments.distance > 0
+    ):
+        die("--lossy is required for distance > 0")
+
+    if (
+        not arguments.lossless
+        and arguments.type == FileTypes.png
+        and arguments.distance > 0
+    ):
+        _ = input("are you sure you want to lossy compress (y/N)?")
+        if _.lower() not in ("y", "yes"):
+            return 0
+
+    if arguments.type == FileTypes.jpg:
+        files = [f for ext in ("*.jpg", "*.jpeg") for f in target.glob(ext)]
+    else:
+        files = list(target.glob(f"*.{arguments.type.name}"))
+
+    if not files:
+        return 0
+
+    if arguments.dry_run:
+        print("\n".join(" ".join(make_cjxl_command(arguments, file)) for file in files))
+
+        if arguments.remove:
+            print("rm", " ".join(str(f) for f in files))
+
+        return 0
+
+    n_cpus = os.cpu_count() or 1
+    n_workers = max(1, min(len(files), n_cpus // 2))
+
+    print(f"prepared {len(files)} targets for compression")
+    print(f"running {n_workers} threads (cpu count {n_cpus})")
+
+    with ThreadPoolExecutor(max_workers=n_workers) as pool:
+        jobs = pool.map(
+            run_cmd_silently,
+            (make_cjxl_command(arguments, file) for file in files),
+        )
+        _ = list(progress.track(jobs, description="Compressing...", total=len(files)))
+
+    if arguments.remove:
+        _ = subprocess.run(["rm", *(str(file) for file in files)], check=True)
+
+    return 0
+
+
+def run_cmd_silently(cmd: list[str]) -> int:
+    result = subprocess.run(
+        cmd,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=True,
+    )
+    return result.returncode
+
+
+if __name__ == "__main__":
+    parser = create_cli_parser()
+    arguments = parser.parse_args(namespace=CliArguments())
+
+    try:
+        exit(main(arguments))
+    except BrokenPipeError:
+        exit(0)
+    except KeyboardInterrupt:
+        exit(1)

@@ -1,28 +1,28 @@
 {
-	"reload": true,
+  "reload": true,
 
-    "height": 46,
-    "spacing": 6,
+  "height": 38,
+  "spacing": 4,
 
-    "include": [
-        "~/.config/waybar/modules.json"
-    ],
+  "include": [
+    "~/.config/waybar/modules.json"
+  ],
 
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window"
-    ],
-    "modules-center": [
-        "clock",
-    ],
-    "modules-right": [
-        // "network",
-        "pulseaudio",
-        "custom/g703",
-        "cpu",
-        "memory",
-        "battery",
-        "tray",
-        "custom/exit"
-    ]
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "pulseaudio",
+    "custom/g703",
+    "battery",
+    "tray",
+    "idle_inhibitor",
+    "custom/exit"
+  ]
 }
