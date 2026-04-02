@@ -228,17 +228,16 @@ def human_readable_time(time_in_seconds: float) -> str:
 
     if time > one_hour:
         hours, time = divmod(time, one_hour)
-        result += f"{hours}h"
+        result += f"{int(hours)}h"
 
     if time > one_minute:
         minutes, time = divmod(time, one_minute)
-        result += f"{minutes}m"
+        result += f"{int(minutes)}m"
 
     if time > one_second:
         seconds, time = divmod(time, one_second)
-        result += f"{seconds}s"
+        result += f"{int(seconds)}s"
 
-    result += f"{time}s"
     return f"{result} ({time_in_seconds:.2f}s)"
 
 
