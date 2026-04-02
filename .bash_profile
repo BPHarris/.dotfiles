@@ -7,5 +7,5 @@
 # Auto-start Hyprland
 if [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" && "${XDG_VTNR:-0}" -eq 1 ]] &&
 	command -v Hyprland >/dev/null 2>&1; then
-	exec Hyprland
+	start-hyprland 
 fi
