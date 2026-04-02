@@ -10,11 +10,13 @@ My dotfiles.
 
 ```bash
 # Minimal:
-sudo pacman -S --needed git ttf-firacode-nerd ttf-font-awesome noto-fonts-emoji
+sudo pacman -S --needed git ttf-firacode-nerd ttf-font-awesome noto-fonts-emoji terminus-font
 
 # Recommended:
-sudo pacman -S --needed git nerd-fonts ttf-font-awesome noto-fonts-emoji
+sudo pacman -S --needed git nerd-fonts ttf-font-awesome noto-fonts-emoji terminus-font
 ```
+
+> [!NOTE] Terminus font gives `ter-v24b` which is not used in here but is a nice TTY font.
 
 **Desktop Environment:**
 
@@ -144,6 +146,22 @@ These can be symlinked manually or by running the helper script:
 Todo:
 Should there be a `udev` rule to set the desktop CPU governor to performance?
 Or should I leave this to be handled by `gamemode`?
+
+### Laptop: Set lid close behaviour
+
+```bash
+sudo sed -i -E 's/^#?HandleLidSwitch=.*/HandleLidSwitch=suspend-then-hibernate/' /etc/systemd/logind.conf
+sudo sed -i -E 's/^#?HandleLidSwitchExternalPower=.*/HandleLidSwitchExternalPower=suspend-then-hibernate/' /etc/systemd/logind.conf
+sudo sed -i -E 's/^#?HandleLidSwitchDocked=.*/HandleLidSwitchDocked=ignore/' /etc/systemd/logind.conf
+sudo systemctl restart systemd-logind
+```
+
+```bash
+sudo tee /etc/systemd/sleep.conf >/dev/null <<'EOF'
+[Sleep]
+HibernateDelaySec=15min
+EOF
+```
 
 ### Theming
 
