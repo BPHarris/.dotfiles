@@ -30,6 +30,7 @@
 /.config/Nextcloud/
 /.config/nvim/spell/
 /.config/pulse/
+/.config/qalculate/qalc.history*
 /.config/QtProject/
 /.config/simple-scan/
 /.config/systemd/user/*.wants/
