@@ -206,7 +206,7 @@ misc {
 	# Enable VFR
 	# I don't know what this is but the docs say it's good for battery life
 	# It's enabled by default but might as well be explicit
-	vfr = true
+	# vfr = true
 }
 
 binds {
@@ -228,12 +228,13 @@ ecosystem {
 
 # Layout configuration
 dwindle {
-	pseudotile = yes
+	# pseudotile = yes
 	preserve_split = yes
 }
 master {
 	new_status = master
 	smart_resizing = false
+	mfact = 0.5
 }
 
 
@@ -285,8 +286,8 @@ bind = $mod shift, f, fullscreen
 
 binde = $mod, j, layoutmsg, cyclenext  # might break on dwindle
 binde = $mod, k, layoutmsg, cycleprev  # might break on dwindle
-bind  = $mod, h, splitratio, -0.05
-bind  = $mod, l, splitratio, +0.05
+# bind  = $mod, h, splitratio, -0.05
+# bind  = $mod, l, splitratio, +0.05
 
 binde = $mod, left,  movefocus, l
 binde = $mod, up,    movefocus, u
