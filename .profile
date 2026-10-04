@@ -23,7 +23,7 @@ append_path() {
 
 export EDITOR='nvim'
 export VISUAL='nvim'
-export TERMINAL='ghostty'
+export TERMINAL='foot'
 export BROWSER='zen-browser'
 export READER='zathura'
 export PAGER='less'
