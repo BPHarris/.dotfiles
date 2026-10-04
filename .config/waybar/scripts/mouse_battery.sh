@@ -5,7 +5,7 @@ EMPTY_WAYBAR_OUTPUT='{"text": "", "class": "hidden"}'
 MOUSE_BATTERY_ID="hid.*battery"
 MOUSE_PATHS=$(upower -e | grep -i "$MOUSE_BATTERY_ID")
 
-if [ -z "$MOUSE_PATHS" ]; then
+if [ "$MOUSE_PATHS" = "" ]; then
 	echo "$EMPTY_WAYBAR_OUTPUT"
 	exit 0
 fi
@@ -35,7 +35,7 @@ while IFS= read -r path; do
 	fi
 done <<<"$MOUSE_PATHS"
 
-if [ -z "$G703_PATH" ]; then
+if [ "$G703_PATH" = "" ]; then
 	echo "$EMPTY_WAYBAR_OUTPUT"
 	exit 0
 fi
@@ -67,5 +67,5 @@ else
 		CLASS="battery"
 	fi
 	PADDED_PERCENTAGE=$(printf "% 3d%%" "$PERCENTAGE")
-	echo "{\"text\": \"$MOUSE_ICON $PADDED_PERCENTAGE $BATTERY_ICON\", \"class\": \"$CLASS\"}"
+	echo "{\"text\": \"$PADDED_PERCENTAGE $MOUSE_ICON $BATTERY_ICON\", \"class\": \"$CLASS\"}"
 fi
