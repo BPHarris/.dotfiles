@@ -6,12 +6,31 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
+-- Some terminals will override C-i as Tab
+-- This ensures that C-i will still jump forwards
+map("n", "<Tab>", "<C-i>", { desc = "Jump forward" })
+
+-- Auto-align
+map("v", "<leader>a", ":!column -t<CR>", {
+  desc = "Align selected lines with column -t",
+})
+
+-- LSP quickfix
+map("n", "<leader>ca", function()
+  vim.lsp.buf.code_action {
+    filter = function(a)
+      return a.isPreferred
+    end,
+    apply = true,
+  }
+end, { desc = "Apply LSP Quickfix" })
+
 -- Quit
 map("n", "<C-x>", ":qall<CR>", { desc = "Quit" })
 
 -- Switch and close buffers without tabufline
-map("n", "<tab>", ":bnext<CR>", { desc = "Goto next buffer" })
-map("n", "<S-tab>", ":bprevious<CR>", { desc = "Goto previous buffer" })
+map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next buffer" })
+map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<leader>x", function()
   local buf_count = #vim.fn.getbufinfo { buflisted = 1 }
 

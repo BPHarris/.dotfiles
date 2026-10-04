@@ -11,6 +11,7 @@ local options = {
     sh = { "shellharden", "shfmt" },
     bssh = { "shellharden", "shfmt" },
     toml = { "tombi" },
+    odin = { "odinfmt" },
 
     html = { "superhtml" },
 

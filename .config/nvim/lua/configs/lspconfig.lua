@@ -2,7 +2,7 @@ require("nvchad.configs.lspconfig").defaults()
 
 local nvlsp = require "nvchad.configs.lspconfig"
 
-local servers = { "html", "cssls", "clangd", "gopls", "ruff", "basedpyright", "zls" }
+local servers = { "html", "cssls", "clangd", "gopls", "ruff", "basedpyright", "ols", "zls" }
 
 -- enable extra server
 vim.lsp.enable "tombi"
@@ -18,12 +18,12 @@ for _, lsp in ipairs(servers) do
   vim.lsp.enable(lsp)
 end
 
--- custom config (bashls)
-vim.lsp.config("bashls", {
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
-  filetypes = { "sh", "bash" },
-})
-
-vim.lsp.enable "bashls"
+-- -- custom config (bashls)
+-- vim.lsp.config("bashls", {
+--   on_attach = nvlsp.on_attach,
+--   on_init = nvlsp.on_init,
+--   capabilities = nvlsp.capabilities,
+--   filetypes = { "sh", "bash" },
+-- })
+--
+-- vim.lsp.enable "bashls"
