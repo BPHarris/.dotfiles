@@ -8,12 +8,15 @@
 
   "hyprland/window": {
     "rewrite": {
-      "(.*) - Brave": "$1",
       "(.*) - Chromium": "$1",
+      "(.*) - Brave": "$1",
+      "(.*) — Mozilla Firefox": "$1",
+      "(.*) — Zen Browser": "$1",
       "(.*) - Brave Search": "$1",
       "(.*) - Outlook": "$1",
       "(.*) Microsoft Teams": "$1"
     },
+	"icon": true,
     "separate-outputs": true,
     "max-length": 70
   },
@@ -39,8 +42,8 @@
   },
 
   "clock": {
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format": "󰥔 {:%a %Y-%m-%d %H:%M}"
+    "tooltip-format": "<tt><big>{calendar}</big></tt>",
+    "format": "{:%a %Y-%m-%d %H:%M}"
   },
 
   "cpu": {
@@ -87,7 +90,7 @@
 
   "battery": {
     "states": {
-      "good": 95,
+      "good": 90,
       "warning": 30,
       "critical": 15
     },
@@ -134,12 +137,6 @@
     "interval": 30,
     "on-click": "blueman-manager",
     "format-no-controller": ""
-  },
-
-  "user": {
-    "format": "{user}",
-    "interval": 60,
-    "icon": false
   },
 
   "idle_inhibitor": {

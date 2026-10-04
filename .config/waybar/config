@@ -2,7 +2,11 @@
   "reload": true,
 
   "height": 38,
-  "spacing": 4,
+  "spacing": 0,
+  "layer": "top",
+  "position": "top",
+  "exclusive": true,
+  "passthrough": false,
 
   "include": [
     "~/.config/waybar/modules.json"
