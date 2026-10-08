@@ -4,6 +4,7 @@
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd(terminal.spawn))
 hl.bind(mod .. " + P", hl.dsp.exec_cmd(dmenu.kill .. " || " .. dmenu.spawn))
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(emoji_picker))
+hl.bind(mod .. " + O", hl.dsp.exec_cmd(terminal.spawn_client .. " opencode"))
 
 -- WM controls
 hl.bind(mod .. " + SHIFT + Q", hl.dsp.window.close())
