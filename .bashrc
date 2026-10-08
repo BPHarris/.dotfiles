@@ -47,8 +47,13 @@ if command -v highlight &>/dev/null; then
 fi
 
 # Aliases (ls)
-alias ls='ls -Xh --group-directories-first --color=auto'
-alias lsize='ls -Alh --size'
+ls() {
+	if command -v eza &>/dev/null; then
+		eza --group-directories-first "$@"
+	else
+		command ls -Xh --group-directories-first --color=auto "$@"
+	fi
+}
 alias la='ls -Ah'
 alias ll='ls -lh'
 alias lla='ls -Alh'
