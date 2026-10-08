@@ -51,6 +51,9 @@ export PIPX_BIN_DIR="$HOME/.local/pipx/bin"
 export PIPX_HOME="$HOME/.local/pipx/venvs"
 append_path "$HOME/.local/pipx/bin"
 
+# Doom Emacs
+append_path "$HOME/.config/emacs/bin"
+
 # XDG base dirs
 if [ -r "$HOME/.local/bin/xdg-base-dirs" ] && [ -f "$HOME/.local/bin/xdg-base-dirs" ]; then
 	. "$HOME/.local/bin/xdg-base-dirs" || echo "xdg-base-dirs: non-zero exit" >&2
