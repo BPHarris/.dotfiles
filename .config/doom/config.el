@@ -5,7 +5,7 @@
       user-mail-address "bpharris@pm.me")
 
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 16)
-      doom-theme 'doom-badger)
+      doom-theme 'doom-old-hope)
 
 (setq display-line-numbers-type 'relative)
 
@@ -33,24 +33,19 @@
 
 
 ;;; In-line git blame
-(use-package! blamer
-  :demand t
+(use-package! sideline
+    :hook (prog-mode . sideline-mode)
+    :custom
+    (sideline-backends-right '((sideline-blame . up)))
+    (sideline-delay 0.05)
+    (sideline-truncate t))
 
-  :custom
-  (blamer-idle-time 0.05)
-  (blamer-min-offset 50)
-  (blamer-prettify-time-p t)
-  (blamer-type 'both)
-  (blamer-author-formatter " %s • ")
-  (blamer-datetime-formatter "%s • ")
-  (blamer-commit-formatter "%s")
-
-  :config
-  (global-blamer-mode 1))
+(use-package! sideline-blame
+    :after sideline)
 
 (map! :leader
-      :desc "Toggle inline blame"
-      "t b" #'blamer-mode)
+            :desc "Toggle inline blame"
+            "t b" #'sideline-mode)
 
 
 ;;; Enable breadcrumbs
@@ -314,14 +309,14 @@
     :documentation "Eglot server with ty-specific client capabilities.")
 
   (setf (alist-get '(python-mode python-ts-mode)
-                    eglot-server-programs
-                    nil nil #'equal)
+                   eglot-server-programs
+                   nil nil #'equal)
         '(my-eglot-ty "ty" "server"))
 
   ;; Disable dynamic filesystem watching only for ty in work checkouts.
   (cl-defmethod eglot-client-capabilities :around ((server my-eglot-ty))
     (let* ((caps (cl-call-next-method))
-            (workspace (plist-get caps :workspace)))
+           (workspace (plist-get caps :workspace)))
       (when (and workspace
                  (my-work-monorepo-p
                   (project-root (eglot--project server))))

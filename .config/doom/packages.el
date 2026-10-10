@@ -3,4 +3,5 @@
 ;;; Packages
 
 (package! breadcrumb)
-(package! blamer)
+(package! sideline)
+(package! sideline-blame)
